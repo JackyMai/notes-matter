@@ -21,4 +21,5 @@ public class TodoHolder extends RecyclerView.ViewHolder {
     public void setTitle(String title) {
         this.title.setText(title);
     }
+
 }
