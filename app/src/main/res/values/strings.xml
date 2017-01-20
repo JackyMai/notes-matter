@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NotesMatter</string>
+    <string name="action_settings">Settings</string>
+    <string name="sample_text">The quick brown fox jumps over the lazy dog. This should be on the second line.</string>
+</resources>
