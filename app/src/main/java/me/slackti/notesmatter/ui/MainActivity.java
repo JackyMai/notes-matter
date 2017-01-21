@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 View dialog_view = getLayoutInflater().inflate(R.layout.dialog_add, null);
 
-                final EditText input = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
+                final EditText editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
+
                 Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
                 Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
 
@@ -66,8 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 add_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!input.getText().toString().isEmpty()) {
+                        String input = editText.getText().toString();
+                        if(!input.isEmpty()) {
                             Toast.makeText(MainActivity.this, "Successfully added new todo", Toast.LENGTH_LONG).show();
+                            addItem(new Todo(input));
                         }
                         dialog.dismiss();
                     }
