@@ -16,16 +16,14 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
-import me.slackti.notesmatter.database.DatabaseHelper;
+import me.slackti.notesmatter.listener.FabListener;
 import me.slackti.notesmatter.model.Todo;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,59 +52,7 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                View dialog_view = getLayoutInflater().inflate(R.layout.dialog_add, null);
-
-                final Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
-                add_button.setEnabled(false);
-
-                Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
-
-                final EditText editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
-                editText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(s.toString().trim().isEmpty()) {
-                            add_button.setEnabled(false);
-                        } else {
-                            add_button.setEnabled(true);
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {}
-                });
-
-                builder.setView(dialog_view);
-                final AlertDialog dialog = builder.create();
-
-                add_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String input = editText.getText().toString();
-                        if(!input.isEmpty()) {
-                            adapter.addItem(new Todo(input));
-                        }
-                        dialog.dismiss();
-                    }
-                });
-                cancel_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.cancel();
-                    }
-                });
-
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
+        fab.setOnClickListener(new FabListener(this, adapter));
     }
 
     private ItemTouchHelper.Callback createHelperCallBack() {
