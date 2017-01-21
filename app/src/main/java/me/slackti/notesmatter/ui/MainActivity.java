@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         String input = editText.getText().toString();
                         if(!input.isEmpty()) {
                             Toast.makeText(MainActivity.this, "Successfully added new todo", Toast.LENGTH_LONG).show();
-                            addItem(new Todo(input));
+                            adapter.addItem(new Todo(input));
                         }
                         dialog.dismiss();
                     }
@@ -94,33 +94,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                           RecyclerView.ViewHolder target) {
-                        moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                        adapter.moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                         return true;
                     }
 
                     @Override
                     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        deleteItem(viewHolder.getAdapterPosition());
+                        adapter.deleteItem(viewHolder.getAdapterPosition());
                     }
                 };
         return simpleItemTouchCallback;
-    }
-
-    private void addItem(Todo todo) {
-        todoList.add(todo);
-        adapter.notifyItemInserted(todoList.indexOf(todo));
-    }
-
-    private void moveItem(int oldPos, int newPos) {
-        Todo todo = (Todo) todoList.get(oldPos);
-        todoList.remove(oldPos);
-        todoList.add(newPos, todo);
-        adapter.notifyItemMoved(oldPos, newPos);
-    }
-
-    private void deleteItem(int position) {
-        todoList.remove(position);
-        adapter.notifyItemRemoved(position);
     }
 
     @Override

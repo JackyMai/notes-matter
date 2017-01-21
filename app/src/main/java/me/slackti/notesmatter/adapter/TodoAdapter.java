@@ -38,4 +38,24 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
     public int getItemCount() {
         return todoList.size();
     }
+
+    public void addItem(Todo todo) {
+        todoList.add(todo);
+
+        this.notifyItemInserted(todoList.indexOf(todo));
+    }
+
+    public void moveItem(int oldPos, int newPos) {
+        Todo todo = (Todo) todoList.get(oldPos);
+        todoList.remove(oldPos);
+        todoList.add(newPos, todo);
+
+        this.notifyItemMoved(oldPos, newPos);
+    }
+
+    public void deleteItem(int position) {
+        todoList.remove(position);
+
+        this.notifyItemRemoved(position);
+    }
 }
