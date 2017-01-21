@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialog_add_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_add_label"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="26dp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/dialog_todo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Keep calm and start typing"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:background="@android:color/transparent"
+        android:minLines="6"
+        android:lines="8"
+        android:maxLines="10"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/dialog_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Cancel"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/dialog_add_button" />
+
+        <Button
+            android:id="@+id/dialog_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="Add"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -2,7 +2,7 @@ package me.slackti.notesmatter.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -50,8 +53,32 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                View dialog_view = getLayoutInflater().inflate(R.layout.dialog_add, null);
+
+                final EditText input = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
+                Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
+                Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
+
+                builder.setView(dialog_view);
+                final AlertDialog dialog = builder.create();
+
+                add_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!input.getText().toString().isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Successfully added new todo", Toast.LENGTH_LONG).show();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                cancel_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
             }
         });
     }
@@ -94,16 +121,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
