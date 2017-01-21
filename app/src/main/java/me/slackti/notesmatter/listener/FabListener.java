@@ -3,11 +3,14 @@ package me.slackti.notesmatter.listener;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.renderscript.ScriptGroup;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -28,8 +31,11 @@ public class FabListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialog_view = inflater.inflate(R.layout.dialog_add, null);
+
+        builder.setView(dialog_view);
 
         final Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
         add_button.setEnabled(false);
@@ -54,8 +60,6 @@ public class FabListener implements View.OnClickListener {
             public void afterTextChanged(Editable s) {}
         });
 
-        builder.setView(dialog_view);
-
         final AlertDialog dialog = builder.create();
 
         add_button.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +79,7 @@ public class FabListener implements View.OnClickListener {
             }
         });
 
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
