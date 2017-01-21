@@ -1,5 +1,6 @@
 package me.slackti.notesmatter.ui;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
+import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
         recView.setLayoutManager(new LinearLayoutManager(this));
 
         todoList = new ArrayList<>();
-        todoList.add(new Todo("Get Apples"));
-        todoList.add(new Todo("Buy Bananas"));
-        todoList.add(new Todo("Sell Sheep"));
 
         adapter = new TodoAdapter(todoList, this);
         recView.setAdapter(adapter);
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         String input = editText.getText().toString();
                         if(!input.isEmpty()) {
-                            Toast.makeText(MainActivity.this, "Successfully added new todo", Toast.LENGTH_LONG).show();
                             adapter.addItem(new Todo(input));
                         }
                         dialog.dismiss();
