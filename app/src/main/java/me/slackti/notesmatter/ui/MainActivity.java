@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,10 +60,28 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 View dialog_view = getLayoutInflater().inflate(R.layout.dialog_add, null);
 
-                final EditText editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
+                final Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
+                add_button.setEnabled(false);
 
-                Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
                 Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
+
+                final EditText editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if(s.toString().trim().isEmpty()) {
+                            add_button.setEnabled(false);
+                        } else {
+                            add_button.setEnabled(true);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {}
+                });
 
                 builder.setView(dialog_view);
                 final AlertDialog dialog = builder.create();
