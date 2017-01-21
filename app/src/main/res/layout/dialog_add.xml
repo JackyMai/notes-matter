@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_dialog_root">
 
     <TextView
         android:id="@+id/dialog_add_label"
@@ -10,14 +12,14 @@
         android:text="@string/dialog_add_label"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:textSize="26dp"
+        android:textSize="26sp"
         android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/dialog_todo_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Keep calm and start typing"
+        android:hint="@string/default_hint"
         android:gravity="top|start"
         android:inputType="textMultiLine|textCapSentences"
         android:background="@android:color/transparent"
@@ -34,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="2dp"
-        android:background="#F5F5F5">
+        android:background="@drawable/background_dialog_bottom" >
 
         <Button
             android:id="@+id/dialog_cancel_button"
