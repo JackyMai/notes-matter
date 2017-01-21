@@ -11,7 +11,6 @@ import me.slackti.notesmatter.model.Todo;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "notesMatter.db";
-
     private static final String TABLE_NAME = "todo_data";
     private static final String COL0 = "ID";
     private static final String COL1 = "TITLE";
@@ -29,26 +28,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    public boolean addData(Todo todo) {
+    public long addData(Todo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
 
+        ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, todo.getTitle());
 
-        long result = db.insert(TABLE_NAME, null, contentValues);
-
-        if(result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return db.insert(TABLE_NAME, null, contentValues);
     }
 
     public Cursor getListContents() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+
+    public boolean deleteData(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long result = db.delete(TABLE_NAME, "ID = ?", new String[] {id});
+
+        if(result == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -55,16 +55,19 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
         Cursor listData = databaseHelper.getListContents();
         if(listData.getCount() > 0) {
             while(listData.moveToNext()) {
-                Todo newTodo = new Todo(listData.getString(1));
+                Todo newTodo = new Todo(listData.getString(0), listData.getString(1));
                 todoList.add(newTodo);
             }
         }
     }
 
     public void addItem(Todo todo) {
-        if(databaseHelper.addData(todo)) {
+        long id = databaseHelper.addData(todo);
+        
+        if(id != -1) {
             Toast.makeText(context, "Successfully added todo!", Toast.LENGTH_LONG).show();
 
+            todo.setId(Long.toString(id));
             todoList.add(todo);
             this.notifyItemInserted(todoList.indexOf(todo));
         } else {
@@ -81,8 +84,15 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
     }
 
     public void deleteItem(int position) {
-        todoList.remove(position);
+        Todo todo = todoList.get(position);
 
-        this.notifyItemRemoved(position);
+        if(databaseHelper.deleteData(todo.getId())) {
+            Toast.makeText(context, "Successfully deleted todo!", Toast.LENGTH_LONG).show();
+
+            todoList.remove(position);
+            this.notifyItemRemoved(position);
+        } else {
+            Toast.makeText(context, "Failed to remove item", Toast.LENGTH_LONG).show();
+        }
     }
 }
