@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/todo_container"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@drawable/background_state_drawable"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@android:color/white">
 
     <TextView
         android:id="@+id/todo_title"
@@ -17,4 +18,4 @@
         android:fontFamily="sans-serif"
         android:textColor="@android:color/black"
         android:text="@string/sample_text"/>
-</RelativeLayout>
+</FrameLayout>
