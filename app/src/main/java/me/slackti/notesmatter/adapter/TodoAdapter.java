@@ -90,24 +90,45 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         }
     }
 
+//    @Override
+//    public void onItemMove(int oldPos, int newPos) {
+//        if(databaseHelper.updateData(todoList, oldPos, newPos)) {
+//            todoList.get(oldPos).setPosition(newPos);
+//            todoList.get(newPos).setPosition(oldPos);
+//
+//            if(oldPos < newPos) {   // Moved down the list
+//                Collections.swap(todoList, oldPos, oldPos+1);
+//            } else {                // Moved up the list
+//                Collections.swap(todoList, oldPos, oldPos-1);
+//            }
+//
+//            this.notifyItemMoved(oldPos, newPos);
+//
+//            Toast.makeText(context, "Got it bro", Toast.LENGTH_LONG).show();
+//        } else {
+//            Toast.makeText(context, "Failed to update position", Toast.LENGTH_LONG).show();
+//        }
+//    }
+
     @Override
     public void onItemMove(int oldPos, int newPos) {
-        if(databaseHelper.updateData(todoList, oldPos, newPos)) {
-            todoList.get(oldPos).setPosition(newPos);
-            todoList.get(newPos).setPosition(oldPos);
+        if(oldPos < newPos) {   // Moved down the list
+            Collections.swap(todoList, oldPos, oldPos+1);
+        } else {                // Moved up the list
+            Collections.swap(todoList, oldPos, oldPos-1);
+        }
 
-            if(oldPos < newPos) {   // Moved down the list
-                Collections.swap(todoList, oldPos, oldPos+1);
-            } else {                // Moved up the list
-                Collections.swap(todoList, oldPos, oldPos-1);
-            }
+        this.notifyItemMoved(oldPos, newPos);
+    }
 
-            this.notifyItemMoved(oldPos, newPos);
-
+    @Override
+    public void updateItemPositions(int fromPosition, int toPosition) {
+        if(databaseHelper.updateListPosition(todoList, fromPosition, toPosition)) {
             Toast.makeText(context, "Got it bro", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context, "Failed to update position", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
         }
+
     }
 
     @Override

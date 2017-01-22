@@ -11,4 +11,5 @@ public interface ItemTouchHelperAdapter {
 
     void onItemDismiss(int position);
 
+    void updateItemPositions(int fromPosition, int toPosition);
 }

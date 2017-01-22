@@ -8,6 +8,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter adapter;
 
+    private int fromPosition = -1;
+    private int toPosition = -1;
+
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         this.adapter = adapter;
     }
@@ -22,6 +25,13 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                           RecyclerView.ViewHolder target) {
+        // Only modify fromPosition once, until it is reset by clearView()
+        if(fromPosition == -1 && toPosition == -1) {
+            fromPosition = viewHolder.getAdapterPosition();
+        }
+
+        toPosition = target.getAdapterPosition();
+
         adapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
@@ -47,10 +57,21 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
-        if (viewHolder instanceof ItemTouchHelperViewHolder) {
+        if(viewHolder instanceof ItemTouchHelperViewHolder) {
             ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
+
+        if(fromPosition != -1 && toPosition != -1) {
+            adapter.updateItemPositions(fromPosition, toPosition);
+        }
+
+        resetDragPositions();
+    }
+
+    private void resetDragPositions() {
+        this.fromPosition = -1;
+        this.toPosition = -1;
     }
 
     @Override
