@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -51,11 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, contentValues);
     }
 
-    // TODO: make this work
     public boolean updateData(ArrayList<Todo> todoList, int oldPos, int newPos) {
         int start, end;
-
-        SQLiteDatabase db = this.getWritableDatabase();
 
         if(oldPos < newPos) {
             start = oldPos;
@@ -65,18 +63,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             end = oldPos;
         }
 
-        for(int i=start; i<=(end-start);i++) {
-            Todo todo = todoList.get(i);
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        for(int i=start; i<=start+1; i++) {     // Should run exactly twice
+            Todo todo = todoList.get(i);
             ContentValues contentValues = new ContentValues();
             contentValues.put(COL0, todo.getId());
             contentValues.put(COL1, todo.getTitle());
-            contentValues.put(COL2, todo.getPosition());
+            contentValues.put(COL2, end);
 
             long result = db.update(TABLE_NAME, contentValues, COL0 + " = ?", new String[] {todo.getId()});
-            if(result == 0) {
+            if (result == 0) {
                 return false;
             }
+
+            end--;
         }
 
         return true;

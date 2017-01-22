@@ -91,18 +91,23 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     }
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        if(fromPosition < toPosition) {
-            for(int i=fromPosition; i<toPosition; i++) {
-                Collections.swap(todoList, i, i+1);
-            }
-        } else {
-            for(int i=fromPosition; i>toPosition; i--) {
-                Collections.swap(todoList, i, i-1);
-            }
-        }
+    public void onItemMove(int oldPos, int newPos) {
+        if(databaseHelper.updateData(todoList, oldPos, newPos)) {
+            todoList.get(oldPos).setPosition(newPos);
+            todoList.get(newPos).setPosition(oldPos);
 
-        this.notifyItemMoved(fromPosition, toPosition);
+            if(oldPos < newPos) {   // Moved down the list
+                Collections.swap(todoList, oldPos, oldPos+1);
+            } else {                // Moved up the list
+                Collections.swap(todoList, oldPos, oldPos-1);
+            }
+
+            this.notifyItemMoved(oldPos, newPos);
+
+            Toast.makeText(context, "Got it bro", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Failed to update position", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
