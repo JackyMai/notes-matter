@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -18,26 +19,27 @@ import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.listener.FabListener;
 import me.slackti.notesmatter.model.Todo;
 
+import static android.view.View.GONE;
+
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recView;
-    private TodoAdapter adapter;
-
-    private ArrayList<Todo> todoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recView = (RecyclerView) findViewById(R.id.todo_list);
+        ArrayList<Todo> todoList = new ArrayList<>();
+
+        TodoAdapter adapter = new TodoAdapter(todoList, this);
+
+        final RelativeLayout bar_container = (RelativeLayout) findViewById(R.id.bar_container);
+        bar_container.setVisibility(GONE);
+
+        RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
-
-        todoList = new ArrayList<>();
-
-        adapter = new TodoAdapter(todoList, this);
         recView.setAdapter(adapter);
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
