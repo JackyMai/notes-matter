@@ -5,6 +5,7 @@
     android:layout_height="56dp"
     android:clickable="true"
     android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:background="@android:color/white">
 
     <TextView
