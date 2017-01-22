@@ -1,4 +1,4 @@
-package me.slackti.notesmatter.adapter;
+package me.slackti.notesmatter.model;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

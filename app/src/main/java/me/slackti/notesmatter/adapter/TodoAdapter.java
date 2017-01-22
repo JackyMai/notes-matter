@@ -10,12 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
+import me.slackti.notesmatter.model.TodoHolder;
 
-public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
+public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter{
 
     private DatabaseHelper databaseHelper;
 
@@ -55,35 +58,55 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
         Cursor listData = databaseHelper.getListContents();
         if(listData.getCount() > 0) {
             while(listData.moveToNext()) {
-                Todo newTodo = new Todo(listData.getString(0), listData.getString(1));
+                Todo newTodo = new Todo(listData.getString(0), listData.getString(1), listData.getInt(2));
                 todoList.add(newTodo);
             }
+
+            // Sort arraylist according to item's position
+            Collections.sort(todoList, new Comparator<Todo>() {
+                @Override
+                public int compare(Todo todo1, Todo todo2) {
+                    return todo1.getPosition()-todo2.getPosition();
+                }
+            });
         }
     }
 
-    public void addItem(Todo todo) {
-        long id = databaseHelper.addData(todo);
-        
-        if(id != -1) {
-            Toast.makeText(context, "Successfully added todo!", Toast.LENGTH_LONG).show();
+    @Override
+    public void onItemAdd(Todo todo) {
+        todo.setPosition(todoList.size());
 
+        long id = databaseHelper.addData(todo);
+
+        if(id != -1) {
             todo.setId(Long.toString(id));
             todoList.add(todo);
+
             this.notifyItemInserted(todoList.indexOf(todo));
+
+            Toast.makeText(context, "ID: " + todo.getId() + ", Position: " + todo.getPosition(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "404 something went wrong", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void moveItem(int oldPos, int newPos) {
-        Todo todo = todoList.get(oldPos);
-        todoList.remove(oldPos);
-        todoList.add(newPos, todo);
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if(fromPosition < toPosition) {
+            for(int i=fromPosition; i<toPosition; i++) {
+                Collections.swap(todoList, i, i+1);
+            }
+        } else {
+            for(int i=fromPosition; i>toPosition; i--) {
+                Collections.swap(todoList, i, i-1);
+            }
+        }
 
-        this.notifyItemMoved(oldPos, newPos);
+        this.notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void deleteItem(int position) {
+    @Override
+    public void onItemDismiss(int position) {
         Todo todo = todoList.get(position);
 
         if(databaseHelper.deleteData(todo.getId())) {

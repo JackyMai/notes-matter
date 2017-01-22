@@ -75,7 +75,7 @@ public class FabListener implements View.OnClickListener {
             public void onClick(View v) {
                 String input = editText.getText().toString();
                 if(!input.isEmpty()) {
-                    adapter.addItem(new Todo(input));
+                    adapter.onItemAdd(new Todo(input));
                 }
                 dialog.dismiss();
             }
@@ -102,7 +102,7 @@ public class FabListener implements View.OnClickListener {
                 if (input.isEmpty()) {      // If string is empty, close dialog
                     dialog.cancel();
                 } else {
-                    adapter.addItem(new Todo(input));
+                    adapter.onItemAdd(new Todo(input));
                     dialog.dismiss();
                 }
             }

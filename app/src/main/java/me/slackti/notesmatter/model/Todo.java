@@ -5,25 +5,21 @@ public class Todo {
 
     private String id;
     private String title;
-    private String note;
-    private boolean complete;
+    private int position;
 
     public Todo(String title) {
         this.title = title;
-        this.complete = false;
     }
 
     public Todo(String id, String title) {
         this.id = id;
         this.title = title;
-        this.complete = false;
     }
 
-    public Todo(String id, String title, String note) {
+    public Todo(String id, String title, int position) {
         this.id = id;
         this.title = title;
-        this.note = note;
-        this.complete = false;
+        this.position = position;
     }
 
     public String getId() {
@@ -42,19 +38,11 @@ public class Todo {
         this.title = title;
     }
 
-    public String getNote() {
-        return this.note;
+    public int getPosition() {
+        return position;
     }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public boolean isComplete() {
-        return complete;
-    }
-
-    public void setComplete(boolean complete) {
-        this.complete = complete;
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
