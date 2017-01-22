@@ -26,6 +26,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private LayoutInflater inflater;
     private Context context;
 
+
     public TodoAdapter(ArrayList<Todo> todoList, Context context) {
         this.todoList = todoList;
         this.inflater = LayoutInflater.from(context);
@@ -39,12 +40,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     @Override
     public TodoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.todo_item, parent, false);
-
         return new TodoHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(TodoHolder holder, int position) {
+    public void onBindViewHolder(TodoHolder holder, final int position) {
         Todo todo = todoList.get(position);
         holder.setTitle(todo.getTitle());
     }
@@ -89,26 +89,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             Toast.makeText(context, "404 something went wrong", Toast.LENGTH_LONG).show();
         }
     }
-
-//    @Override
-//    public void onItemMove(int oldPos, int newPos) {
-//        if(databaseHelper.updateData(todoList, oldPos, newPos)) {
-//            todoList.get(oldPos).setPosition(newPos);
-//            todoList.get(newPos).setPosition(oldPos);
-//
-//            if(oldPos < newPos) {   // Moved down the list
-//                Collections.swap(todoList, oldPos, oldPos+1);
-//            } else {                // Moved up the list
-//                Collections.swap(todoList, oldPos, oldPos-1);
-//            }
-//
-//            this.notifyItemMoved(oldPos, newPos);
-//
-//            Toast.makeText(context, "Got it bro", Toast.LENGTH_LONG).show();
-//        } else {
-//            Toast.makeText(context, "Failed to update position", Toast.LENGTH_LONG).show();
-//        }
-//    }
 
     @Override
     public void onItemMove(int oldPos, int newPos) {

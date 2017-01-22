@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import me.slackti.notesmatter.model.Todo;
@@ -51,37 +49,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return db.insert(TABLE_NAME, null, contentValues);
     }
-
-//    public boolean updateData(ArrayList<Todo> todoList, int oldPos, int newPos) {
-//        int start, end;
-//
-//        if(oldPos < newPos) {
-//            start = oldPos;
-//            end = newPos;
-//        } else {
-//            start = newPos;
-//            end = oldPos;
-//        }
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        for(int i=start; i<=start+1; i++) {     // Should run exactly twice
-//            Todo todo = todoList.get(i);
-//            ContentValues contentValues = new ContentValues();
-//            contentValues.put(COL0, todo.getId());
-//            contentValues.put(COL1, todo.getTitle());
-//            contentValues.put(COL2, end);
-//
-//            long result = db.update(TABLE_NAME, contentValues, COL0 + " = ?", new String[] {todo.getId()});
-//            if (result == 0) {
-//                return false;
-//            }
-//
-//            end--;
-//        }
-//
-//        return true;
-//    }
 
     public boolean updateListPosition(ArrayList<Todo> todoList, int fromPosition, int toPosition) {
         int start, end;
