@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorRipple">#B6B6B6</color>
-    <color name="colorSecondary">#FDD835</color>
-    <color name="colorSecondaryDark">#FBC02D</color>
+    <color name="colorSecondary">#FFC107</color>
+    <color name="colorSecondaryDark">#FFA000</color>
 </resources>
