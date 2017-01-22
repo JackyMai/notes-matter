@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 import me.slackti.notesmatter.model.Todo;
 
-import static android.R.attr.id;
-
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "notesMatter.db";
@@ -53,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, contentValues);
     }
 
+    // TODO: make this work
     public boolean updateData(ArrayList<Todo> todoList, int oldPos, int newPos) {
         int start, end;
 
