@@ -69,15 +69,17 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         holder.selectedOverlay.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public void toggleSelected(int clickedPos) {
-        if(selectedPos == clickedPos) {
-            selectedPos = -1;   // Reset selectedPos
-            notifyItemChanged(clickedPos);
+    private void toggleSelected(int clickedPos) {
+        if(selectedPos == clickedPos) {     // Deselect item
+            selectedPos = -1;
+            notifyItemChanged(clickedPos);  // Select item
         } else {
             notifyItemChanged(selectedPos);     // Update previous position
             selectedPos = clickedPos;
             notifyItemChanged(selectedPos);     // Update new position
         }
+
+        bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
     }
 
 
