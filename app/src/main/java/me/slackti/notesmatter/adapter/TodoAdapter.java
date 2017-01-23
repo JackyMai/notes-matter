@@ -98,7 +98,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
     }
 
-
     @Override
     public int getItemCount() {
         return todoList.size();
