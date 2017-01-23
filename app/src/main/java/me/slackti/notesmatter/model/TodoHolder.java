@@ -1,6 +1,8 @@
 package me.slackti.notesmatter.model;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -10,14 +12,17 @@ import me.slackti.notesmatter.adapter.ItemTouchHelperViewHolder;
 
 
 public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+//    private View container;
     private TextView title;
-    private View container;
+    public View selectedOverlay;
+    private Context context;
 
     public TodoHolder(View itemView) {
         super(itemView);
-
+//        container = itemView.findViewById(R.id.todo_container);
         title = (TextView) itemView.findViewById(R.id.todo_title);
-        container = itemView.findViewById(R.id.todo_container);
+        selectedOverlay = itemView.findViewById(R.id.selected_overlay);
+        context = itemView.getContext();
     }
 
     public void setTitle(String title) {
@@ -26,7 +31,7 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onItemSelected() {
-        itemView.setBackgroundColor(Color.LTGRAY);
+        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemSelected));
     }
 
     @Override

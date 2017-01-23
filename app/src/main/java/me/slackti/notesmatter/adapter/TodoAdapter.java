@@ -4,9 +4,11 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,7 +20,12 @@ import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
 
+import static android.view.View.GONE;
+
+
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
+
+    private RelativeLayout bar_container;
 
     private DatabaseHelper databaseHelper;
 
@@ -26,11 +33,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private LayoutInflater inflater;
     private Context context;
 
+    private int selectedPos = -1;
 
-    public TodoAdapter(ArrayList<Todo> todoList, Context context) {
+    public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container) {
         this.todoList = todoList;
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+        this.bar_container = bar_container;
 
         databaseHelper = new DatabaseHelper(context);
 
@@ -39,15 +48,38 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     @Override
     public TodoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.todo_item, parent, false);
-        return new TodoHolder(view);
+        final View view = inflater.inflate(R.layout.todo_item, parent, false);
+        final TodoHolder todoHolder = new TodoHolder(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = todoHolder.getAdapterPosition();
+                toggleSelected(position);
+            }
+        });
+
+        return todoHolder;
     }
 
     @Override
-    public void onBindViewHolder(TodoHolder holder, final int position) {
+    public void onBindViewHolder(TodoHolder holder, int position) {
         Todo todo = todoList.get(position);
         holder.setTitle(todo.getTitle());
+        holder.selectedOverlay.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
     }
+
+    public void toggleSelected(int clickedPos) {
+        if(selectedPos == clickedPos) {
+            selectedPos = -1;   // Reset selectedPos
+            notifyItemChanged(clickedPos);
+        } else {
+            notifyItemChanged(selectedPos);     // Update previous position
+            selectedPos = clickedPos;
+            notifyItemChanged(selectedPos);     // Update new position
+        }
+    }
+
 
     @Override
     public int getItemCount() {
@@ -108,7 +140,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         } else {
             Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override

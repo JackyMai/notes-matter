@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<Todo> todoList = new ArrayList<>();
 
-        TodoAdapter adapter = new TodoAdapter(todoList, this);
-
         final RelativeLayout bar_container = (RelativeLayout) findViewById(R.id.bar_container);
         bar_container.setVisibility(GONE);
+
+        TodoAdapter adapter = new TodoAdapter(todoList, this, bar_container);
 
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
