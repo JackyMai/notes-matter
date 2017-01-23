@@ -31,11 +31,13 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onItemSelected() {
-        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemSelected));
+//        itemView.setElevation(10);
+//        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemSelected));
     }
 
     @Override
     public void onItemClear() {
-        itemView.setBackgroundColor(Color.WHITE);
+//        itemView.setBackgroundColor(Color.WHITE);
+//        itemView.setElevation(0);
     }
 }

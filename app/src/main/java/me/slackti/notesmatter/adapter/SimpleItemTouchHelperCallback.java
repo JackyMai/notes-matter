@@ -1,5 +1,7 @@
 package me.slackti.notesmatter.adapter;
 
+import android.graphics.Canvas;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -10,6 +12,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private int fromPosition = -1;
     private int toPosition = -1;
+
+    private boolean viewCleared;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         this.adapter = adapter;
@@ -66,12 +70,30 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             adapter.updateItemPositions(fromPosition, toPosition);
         }
 
+        viewCleared = true;
+        viewHolder.itemView.setElevation(0);
+
         resetDragPositions();
     }
 
     private void resetDragPositions() {
         this.fromPosition = -1;
         this.toPosition = -1;
+    }
+
+    // onChildDraw() is called both before and after clearView(), therefore viewCleared should
+    // be set to false after it's set to true by clearView()
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                            RecyclerView.ViewHolder viewHolder,
+                            float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+        if(viewCleared) {
+            viewCleared = false;
+        } else {
+            viewHolder.itemView.setElevation(8);
+        }
     }
 
     @Override
