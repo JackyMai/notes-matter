@@ -33,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<Todo> todoList = new ArrayList<>();
 
-        final RelativeLayout bar_container = (RelativeLayout) findViewById(R.id.bar_container);
-        bar_container.setVisibility(GONE);
+        final RelativeLayout barContainer = (RelativeLayout) findViewById(R.id.bar_container);
+        barContainer.setVisibility(GONE);
 
-        TodoAdapter adapter = new TodoAdapter(todoList, this, bar_container);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        TodoAdapter adapter = new TodoAdapter(todoList, this, barContainer, fab);
 
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recView);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new FabListener(this, adapter));
     }
 

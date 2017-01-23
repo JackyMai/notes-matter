@@ -3,6 +3,7 @@ package me.slackti.notesmatter.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import static android.view.View.GONE;
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
 
     private RelativeLayout bar_container;
+    private FloatingActionButton fab;
 
     private DatabaseHelper databaseHelper;
 
@@ -40,11 +42,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     private int selectedPos = -1;
 
-    public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container) {
+    public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container,
+                       FloatingActionButton fab) {
         this.todoList = todoList;
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         this.bar_container = bar_container;
+        this.fab = fab;
 
         fadeInAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
         fadeInAnim.setDuration(225);
@@ -60,7 +64,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     public TodoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = inflater.inflate(R.layout.todo_item, parent, false);
         final TodoHolder todoHolder = new TodoHolder(view);
-
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,13 +83,16 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     }
 
     private void toggleSelected(int clickedPos) {
+
         if(selectedPos == clickedPos) {     // Deselect item
             bar_container.startAnimation(fadeOutAnim);
+            fab.show();
 
             selectedPos = -1;
             notifyItemChanged(clickedPos);
         } else {                            // Select item
             if(selectedPos == -1) {
+                fab.hide();
                 bar_container.startAnimation(fadeInAnim);   // Only fade in if nothing is selected
             }
 
