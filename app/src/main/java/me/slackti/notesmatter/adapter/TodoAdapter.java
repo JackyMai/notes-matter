@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,6 @@ import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
-
-import static android.view.View.GONE;
 
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
@@ -83,7 +80,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     }
 
     private void toggleSelected(int clickedPos) {
-
         if(selectedPos == clickedPos) {     // Deselect item
             bar_container.startAnimation(fadeOutAnim);
             fab.show();
@@ -99,9 +95,14 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             notifyItemChanged(selectedPos);     // Update previous position
             selectedPos = clickedPos;
             notifyItemChanged(selectedPos);     // Update new position
+//            Toast.makeText(context, "selectedPos: " + selectedPos, Toast.LENGTH_SHORT).show();
         }
 
         bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
+    }
+
+    public Todo getSelectedItem() {
+        return todoList.get(selectedPos);
     }
 
     @Override
@@ -113,8 +114,15 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         Cursor listData = databaseHelper.getListContents();
         if(listData.getCount() > 0) {
             while(listData.moveToNext()) {
-                Todo newTodo = new Todo(listData.getString(0), listData.getString(1), listData.getInt(2));
-                todoList.add(newTodo);
+                Todo newTodo = new Todo(listData.getString(0),
+                        listData.getString(1),
+                        listData.getInt(2),
+                        listData.getInt(3) != 0); // Convert int to boolean
+
+                // Only add todos that are incomplete
+                if(!newTodo.getDone()) {
+                    todoList.add(newTodo);
+                }
             }
 
             // Sort arraylist according to item's position
@@ -162,6 +170,23 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             Toast.makeText(context, "Got it bro", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onItemDone(int position) {
+        Todo todo = todoList.get(position);
+        todo.setDone(true);
+
+        if(databaseHelper.updateData(todo)) {
+            Toast.makeText(context, "Well done bro", Toast.LENGTH_LONG).show();
+
+            todoList.remove(position);
+            this.notifyItemRemoved(position);
+
+            updateItemPositions(position, todoList.size()-1);
+        } else {
+            Toast.makeText(context, "Failed to archive item", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -1,5 +1,6 @@
 package me.slackti.notesmatter.ui;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.SimpleItemTouchHelperCallback;
 import me.slackti.notesmatter.adapter.TodoAdapter;
+import me.slackti.notesmatter.listener.DeleteButtonListener;
+import me.slackti.notesmatter.listener.DoneButtonListener;
 import me.slackti.notesmatter.listener.FabListener;
 import me.slackti.notesmatter.model.Todo;
 
@@ -40,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         TodoAdapter adapter = new TodoAdapter(todoList, this, barContainer, fab);
 
+        fab.setOnClickListener(new FabListener(this, adapter));
+
+        ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
+        doneButton.setOnClickListener(new DoneButtonListener(adapter));
+
+//        ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
+
+        ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new DeleteButtonListener(adapter));
+
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setAdapter(adapter);
@@ -47,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recView);
-
-        fab.setOnClickListener(new FabListener(this, adapter));
     }
 
     @Override
