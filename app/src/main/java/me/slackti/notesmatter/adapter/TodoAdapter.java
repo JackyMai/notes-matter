@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -33,6 +35,9 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private LayoutInflater inflater;
     private Context context;
 
+    private Animation fadeInAnim;
+    private Animation fadeOutAnim;
+
     private int selectedPos = -1;
 
     public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container) {
@@ -40,6 +45,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         this.bar_container = bar_container;
+
+        fadeInAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+        fadeInAnim.setDuration(225);
+        fadeOutAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
+        fadeOutAnim.setDuration(195);
 
         databaseHelper = new DatabaseHelper(context);
 
@@ -71,9 +81,15 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     private void toggleSelected(int clickedPos) {
         if(selectedPos == clickedPos) {     // Deselect item
+            bar_container.startAnimation(fadeOutAnim);
+
             selectedPos = -1;
-            notifyItemChanged(clickedPos);  // Select item
-        } else {
+            notifyItemChanged(clickedPos);
+        } else {                            // Select item
+            if(selectedPos == -1) {
+                bar_container.startAnimation(fadeInAnim);
+            }
+
             notifyItemChanged(selectedPos);     // Update previous position
             selectedPos = clickedPos;
             notifyItemChanged(selectedPos);     // Update new position

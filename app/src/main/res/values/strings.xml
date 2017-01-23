@@ -4,4 +4,7 @@
     <string name="sample_text">The quick brown fox jumps over the lazy dog. This should be on the second line.</string>
     <string name="dialog_add_label">TODO</string>
     <string name="default_hint">Keep calm and start typing</string>
+    <string name="archive_button">Archive</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
 </resources>
