@@ -87,7 +87,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             notifyItemChanged(clickedPos);
         } else {                            // Select item
             if(selectedPos == -1) {
-                bar_container.startAnimation(fadeInAnim);
+                bar_container.startAnimation(fadeInAnim);   // Only fade in if nothing is selected
             }
 
             notifyItemChanged(selectedPos);     // Update previous position
