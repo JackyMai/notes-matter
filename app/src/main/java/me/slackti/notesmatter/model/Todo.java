@@ -8,10 +8,7 @@ public class Todo {
     private int position;
     private boolean done;
 
-    public Todo() {
-        this.title = null;
-        this.position = -1;
-    }
+    public Todo() {}
 
     public Todo(String title) {
         this.title = title;
@@ -55,6 +52,13 @@ public class Todo {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public void setNull() {
+        this.id = null;
+        this.title = null;
+        this.position = -1;
+        this.done = false;
     }
 
 }

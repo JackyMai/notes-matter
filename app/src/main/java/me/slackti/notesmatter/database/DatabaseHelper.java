@@ -54,23 +54,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, contentValues);
     }
 
-    public boolean updateListPosition(ArrayList<Todo> todoList, int fromPosition, int toPosition) {
-        int start, end;
-
-        if(fromPosition < toPosition) {
-            start = fromPosition;
-            end = toPosition;
-        } else {
-            start = toPosition;
-            end = fromPosition;
-        }
-
+    public boolean updateListPosition(ArrayList<Todo> todoList, int start, int end) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         for(int i=start; i<=end; i++) {
             Todo todo = todoList.get(i);
 
             if(todo.getPosition() != i) {
+                todo.setPosition(i);
+
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(COL0, todo.getId());
                 contentValues.put(COL1, todo.getTitle());

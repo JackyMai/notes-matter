@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             notifyItemChanged(selectedPos);     // Update previous position
             selectedPos = clickedPos;
             notifyItemChanged(selectedPos);     // Update new position
+            Log.d("TEST RESPONSE", "selectedPos set to: " + selectedPos);
         }
 
         bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
@@ -112,6 +114,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     private void getItems() {
         Cursor listData = databaseHelper.getListContents();
+
         if(listData.getCount() > 0) {
             while(listData.moveToNext()) {
                 Todo newTodo = new Todo(listData.getString(0),
@@ -157,17 +160,38 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     public void onItemMove(int oldPos, int newPos) {
         if(oldPos < newPos) {   // Moved down the list
             Collections.swap(todoList, oldPos, oldPos+1);
+            if(selectedPos == oldPos) {
+                selectedPos++;
+            } else if(selectedPos == newPos) {
+                selectedPos--;
+            }
         } else {                // Moved up the list
             Collections.swap(todoList, oldPos, oldPos-1);
+            if(selectedPos == oldPos) {
+                selectedPos--;
+            } else if(selectedPos == newPos) {
+                selectedPos++;
+            }
         }
 
         this.notifyItemMoved(oldPos, newPos);
+        Log.d("TEST RESPONSE", "onItemMove() triggered");
     }
 
     @Override
     public void updateItemPositions(int fromPosition, int toPosition) {
-        if(databaseHelper.updateListPosition(todoList, fromPosition, toPosition)) {
-            Toast.makeText(context, "Got it bro", Toast.LENGTH_LONG).show();
+        int start, end;
+
+        if(fromPosition < toPosition) {
+            start = fromPosition;
+            end = toPosition;
+        } else {
+            start = toPosition;
+            end = fromPosition;
+        }
+
+        if(databaseHelper.updateListPosition(todoList, start, end)) {
+            Toast.makeText(context, "Updated item positions", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
         }
@@ -179,12 +203,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         todo.setDone(true);
 
         if(databaseHelper.updateData(todo)) {
-            Toast.makeText(context, "Well done bro", Toast.LENGTH_LONG).show();
-
             todoList.remove(position);
             this.notifyItemRemoved(position);
 
-            updateItemPositions(position, todoList.size()-1);
+            selectedPos = -1;
+            toggleSelected(selectedPos);
+
+            // To prevent operation from going out of bound when removing last item
+            if(position < todoList.size()) {
+                updateItemPositions(position, todoList.size()-1);
+            }
+
+            Toast.makeText(context, "Well done bro", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "Failed to archive item", Toast.LENGTH_LONG).show();
         }
@@ -195,10 +225,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         Todo todo = todoList.get(position);
 
         if(databaseHelper.deleteData(todo.getId())) {
-            Toast.makeText(context, "Successfully deleted todo!", Toast.LENGTH_LONG).show();
-
             todoList.remove(position);
             this.notifyItemRemoved(position);
+
+            selectedPos = -1;
+            toggleSelected(selectedPos);
+
+            // To prevent operation from going out of bound when removing last item
+            if(position < todoList.size()) {
+                updateItemPositions(position, todoList.size()-1);
+            }
+
+            Toast.makeText(context, "Removed from position: " + position, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "Failed to remove item", Toast.LENGTH_LONG).show();
         }

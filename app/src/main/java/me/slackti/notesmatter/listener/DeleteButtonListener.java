@@ -1,13 +1,11 @@
 package me.slackti.notesmatter.listener;
 
+import android.util.Log;
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.model.Todo;
 
-/**
- * Created by Jacky on 24/01/2017.
- */
 
 public class DeleteButtonListener implements View.OnClickListener {
     private TodoAdapter adapter;
@@ -19,6 +17,7 @@ public class DeleteButtonListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Todo todo = adapter.getSelectedItem();
+        Log.d("TEST RESPONSE", "Todo position retrieved: " + todo.getPosition());
         adapter.onItemDismiss(todo.getPosition());
     }
 }
