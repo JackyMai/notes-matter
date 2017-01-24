@@ -71,7 +71,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         }
 
         viewCleared = true;
-        viewHolder.itemView.setElevation(0);
 
         resetDragPositions();
     }
@@ -82,7 +81,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     // onChildDraw() is called both before and after clearView(), therefore viewCleared should
-    // be set to false after it's set to true by clearView()
+    // be set to false after it's been set to true by clearView()
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView,
                             RecyclerView.ViewHolder viewHolder,
@@ -92,7 +91,10 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if(viewCleared) {
             viewCleared = false;
         } else {
-            viewHolder.itemView.setElevation(8);
+            if(viewHolder instanceof ItemTouchHelperViewHolder) {
+                ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+                itemViewHolder.onDraw();
+            }
         }
     }
 

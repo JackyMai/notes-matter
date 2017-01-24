@@ -39,6 +39,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     private int selectedPos = -1;
 
+
     public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container,
                        FloatingActionButton fab) {
         this.todoList = todoList;
@@ -95,7 +96,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             notifyItemChanged(selectedPos);     // Update previous position
             selectedPos = clickedPos;
             notifyItemChanged(selectedPos);     // Update new position
-//            Toast.makeText(context, "selectedPos: " + selectedPos, Toast.LENGTH_SHORT).show();
         }
 
         bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);

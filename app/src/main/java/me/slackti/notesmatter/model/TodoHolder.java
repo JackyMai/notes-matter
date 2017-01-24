@@ -15,14 +15,14 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 //    private View container;
     private TextView title;
     public View selectedOverlay;
-    private Context context;
+//    private Context context;
 
     public TodoHolder(View itemView) {
         super(itemView);
 //        container = itemView.findViewById(R.id.todo_container);
         title = (TextView) itemView.findViewById(R.id.todo_title);
         selectedOverlay = itemView.findViewById(R.id.selected_overlay);
-        context = itemView.getContext();
+//        context = itemView.getContext();
     }
 
     public void setTitle(String title) {
@@ -30,14 +30,17 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
     }
 
     @Override
-    public void onItemSelected() {
-//        itemView.setElevation(10);
+    public void onDraw() {
+        itemView.setElevation(8);
 //        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemSelected));
     }
 
     @Override
+    public void onItemSelected() { }
+
+    @Override
     public void onItemClear() {
+        itemView.setElevation(0);
 //        itemView.setBackgroundColor(Color.WHITE);
-//        itemView.setElevation(0);
     }
 }
