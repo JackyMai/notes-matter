@@ -1,6 +1,7 @@
 package me.slackti.notesmatter.listener;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -39,20 +41,20 @@ public class FabListener implements View.OnClickListener {
 
         dialog = builder.create();
 
-        final Button add_button = (Button) dialog_view.findViewById(R.id.dialog_add_button);
-        add_button.setEnabled(false);
+        final ImageButton add_button = (ImageButton) dialog_view.findViewById(R.id.dialog_add_button);
+//        add_button.setEnabled(false);
 
-        Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
+//        Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
 
         editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().isEmpty()) {
-                    add_button.setEnabled(false);
-                } else {
-                    add_button.setEnabled(true);
-                }
+//                if(s.toString().trim().isEmpty()) {
+//                    add_button.setEnabled(false);
+//                } else {
+//                    add_button.setEnabled(true);
+//                }
 
                 checkForNewLine(s, start, count);
             }
@@ -67,19 +69,20 @@ public class FabListener implements View.OnClickListener {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = editText.getText().toString();
+                String input = editText.getText().toString().trim();
                 if(!input.isEmpty()) {
                     adapter.onItemAdd(new Todo(input));
+                } else {
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             }
         });
-        cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
+//        cancel_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.cancel();
+//            }
+//        });
 
         // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);

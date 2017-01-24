@@ -38,22 +38,24 @@
         android:padding="2dp"
         android:background="@drawable/background_dialog_bottom" >
 
-        <Button
-            android:id="@+id/dialog_cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/borderlessButtonStyle"
-            android:text="@string/cancel_button"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/dialog_add_button" />
+        <!--<Button-->
+            <!--android:id="@+id/dialog_cancel_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--style="?android:attr/borderlessButtonStyle"-->
+            <!--android:text="@string/cancel_button"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_toStartOf="@+id/dialog_add_button" />-->
 
-        <Button
+        <ImageButton
             android:id="@+id/dialog_add_button"
+            android:text="@string/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/borderlessButtonStyle"
-            android:text="@string/add_button"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_send_white_24dp"
+            android:tint="@color/colorAccent"
+            style="?android:attr/borderlessButtonStyle" />
 
     </RelativeLayout>
 
