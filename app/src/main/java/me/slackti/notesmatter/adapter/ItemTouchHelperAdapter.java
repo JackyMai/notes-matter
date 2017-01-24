@@ -7,6 +7,8 @@ public interface ItemTouchHelperAdapter {
 
     void onItemAdd(Todo todo);
 
+    void onItemUpdate(Todo todo);
+
     void onItemMove(int fromPosition, int toPosition);
 
     void updateItemPositions(int fromPosition, int toPosition);

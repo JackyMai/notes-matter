@@ -20,6 +20,7 @@ import me.slackti.notesmatter.adapter.SimpleItemTouchHelperCallback;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.listener.DeleteButtonListener;
 import me.slackti.notesmatter.listener.DoneButtonListener;
+import me.slackti.notesmatter.listener.EditButtonListener;
 import me.slackti.notesmatter.listener.FabListener;
 import me.slackti.notesmatter.model.Todo;
 
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
         doneButton.setOnClickListener(new DoneButtonListener(adapter));
 
-//        ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
+        ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
+        editButton.setOnClickListener(new EditButtonListener(this, adapter));
 
         ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new DeleteButtonListener(adapter));

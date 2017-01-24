@@ -157,6 +157,17 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     }
 
     @Override
+    public void onItemUpdate(Todo todo) {
+        if(databaseHelper.updateData(todo)) {
+            Toast.makeText(context, "Successfully edited todo!", Toast.LENGTH_SHORT).show();
+
+            this.notifyItemChanged(todo.getPosition());
+        } else {
+            Toast.makeText(context, "Failed to edit todo!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public void onItemMove(int oldPos, int newPos) {
         if(oldPos < newPos) {   // Moved down the list
             Collections.swap(todoList, oldPos, oldPos+1);
