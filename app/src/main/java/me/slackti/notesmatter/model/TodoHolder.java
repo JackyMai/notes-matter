@@ -13,14 +13,13 @@ import me.slackti.notesmatter.adapter.ItemTouchHelperViewHolder;
 
 
 public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
-//    private View container;
+
     private TextView title;
     public View selectedOverlay;
     private Context context;
 
     public TodoHolder(View itemView) {
         super(itemView);
-//        container = itemView.findViewById(R.id.todo_container);
         title = (TextView) itemView.findViewById(R.id.todo_title);
         selectedOverlay = itemView.findViewById(R.id.selected_overlay);
         context = itemView.getContext();

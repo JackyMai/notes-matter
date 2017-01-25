@@ -17,7 +17,6 @@ public class DeleteButtonListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Todo todo = adapter.getSelectedItem();
-        Log.d("TEST RESPONSE", "Todo position retrieved: " + todo.getPosition());
         adapter.onItemDismiss(todo.getPosition());
     }
 }

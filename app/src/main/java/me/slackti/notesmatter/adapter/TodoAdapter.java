@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private Animation fadeOutAnim;
 
     private int selectedPos = -1;
-
 
     public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container,
                        FloatingActionButton fab) {
@@ -97,7 +95,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             notifyItemChanged(selectedPos);     // Update previous position
             selectedPos = clickedPos;
             notifyItemChanged(selectedPos);     // Update new position
-            Log.d("TEST RESPONSE", "selectedPos set to: " + selectedPos);
         }
 
         bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
@@ -149,8 +146,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             todoList.add(todo);
 
             this.notifyItemInserted(todoList.indexOf(todo));
-
-            Toast.makeText(context, "ID: " + todo.getId() + ", Position: " + todo.getPosition(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "404 something went wrong", Toast.LENGTH_LONG).show();
         }
@@ -159,8 +154,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     @Override
     public void onItemUpdate(Todo todo) {
         if(databaseHelper.updateData(todo)) {
-            Toast.makeText(context, "Successfully edited todo!", Toast.LENGTH_SHORT).show();
-
             this.notifyItemChanged(todo.getPosition());
         } else {
             Toast.makeText(context, "Failed to edit todo!", Toast.LENGTH_SHORT).show();
@@ -186,7 +179,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         }
 
         this.notifyItemMoved(oldPos, newPos);
-        Log.d("TEST RESPONSE", "onItemMove() triggered");
     }
 
     @Override
@@ -201,9 +193,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             end = fromPosition;
         }
 
-        if(databaseHelper.updateListPosition(todoList, start, end)) {
-            Toast.makeText(context, "Updated item positions", Toast.LENGTH_LONG).show();
-        } else {
+        if(!databaseHelper.updateListPosition(todoList, start, end)) {
             Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
         }
     }
@@ -224,8 +214,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             if(position < todoList.size()) {
                 updateItemPositions(position, todoList.size()-1);
             }
-
-            Toast.makeText(context, "Well done bro", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(context, "Failed to archive item", Toast.LENGTH_LONG).show();
         }
@@ -246,8 +234,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             if(position < todoList.size()) {
                 updateItemPositions(position, todoList.size()-1);
             }
-
-            Toast.makeText(context, "Removed from position: " + position, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "Failed to remove item", Toast.LENGTH_LONG).show();
         }
