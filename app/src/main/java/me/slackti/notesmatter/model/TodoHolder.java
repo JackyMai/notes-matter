@@ -2,6 +2,7 @@ package me.slackti.notesmatter.model;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,14 +16,14 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 //    private View container;
     private TextView title;
     public View selectedOverlay;
-//    private Context context;
+    private Context context;
 
     public TodoHolder(View itemView) {
         super(itemView);
 //        container = itemView.findViewById(R.id.todo_container);
         title = (TextView) itemView.findViewById(R.id.todo_title);
         selectedOverlay = itemView.findViewById(R.id.selected_overlay);
-//        context = itemView.getContext();
+        context = itemView.getContext();
     }
 
     public void setTitle(String title) {
@@ -31,8 +32,11 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onDraw() {
-        itemView.setElevation(8);
-//        itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemSelected));
+        if(Build.VERSION.SDK_INT >= 21) {
+            itemView.setElevation(8);
+        } else {
+            itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemDrag));
+        }
     }
 
     @Override
@@ -40,7 +44,10 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onItemClear() {
-        itemView.setElevation(0);
-//        itemView.setBackgroundColor(Color.WHITE);
+        if(Build.VERSION.SDK_INT >= 21) {
+            itemView.setElevation(0);
+        } else {
+            itemView.setBackgroundColor(Color.WHITE);
+        }
     }
 }

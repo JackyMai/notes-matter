@@ -7,4 +7,5 @@
     <color name="colorSecondary">#FFC107</color>
     <color name="colorSecondaryDark">#FFA000</color>
     <color name="colorItemSelected">#FCE4EC</color>
+    <color name="colorItemDrag">#F5F5F5</color>
 </resources>
