@@ -4,9 +4,7 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +18,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.callback.ActionModeCallback;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
-import me.slackti.notesmatter.ui.MainActivity;
 
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
@@ -43,6 +39,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     private int selectedPos = -1;
 
+
     public TodoAdapter(Context context, RelativeLayout bar_container, FloatingActionButton fab) {
         this.context = context;
         this.bar_container = bar_container;
@@ -57,7 +54,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         todoList = new ArrayList<>();
         databaseHelper = new DatabaseHelper(context);
 
-        getItems();
+        getDatabaseItems();
     }
 
     @Override
@@ -107,12 +104,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         return todoList.get(selectedPos);
     }
 
-    @Override
-    public int getItemCount() {
-        return todoList.size();
-    }
-
-    private void getItems() {
+    private void getDatabaseItems() {
         Cursor listData = databaseHelper.getListContents();
 
         if(listData.getCount() > 0) {
@@ -136,6 +128,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
                 }
             });
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return todoList.size();
     }
 
     @Override
@@ -240,7 +237,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         }
     }
 
-    public void clearSelection() {
+    private void clearSelection() {
         selectedPos = -1;
         toggleSelected(selectedPos);
     }
