@@ -1,7 +1,5 @@
 package me.slackti.notesmatter.ui;
 
-import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +15,7 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.adapter.SimpleItemTouchHelperCallback;
+import me.slackti.notesmatter.callback.SimpleItemTouchHelperCallback;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.listener.DeleteButtonListener;
 import me.slackti.notesmatter.listener.DoneButtonListener;
@@ -37,14 +35,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ArrayList<Todo> todoList = new ArrayList<>();
-
         final RelativeLayout barContainer = (RelativeLayout) findViewById(R.id.bar_container);
         barContainer.setVisibility(GONE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        TodoAdapter adapter = new TodoAdapter(todoList, this, barContainer, fab);
+        TodoAdapter adapter = new TodoAdapter(this, barContainer, fab);
 
         fab.setOnClickListener(new FabListener(this, adapter));
 

@@ -4,7 +4,9 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import me.slackti.notesmatter.R;
+import me.slackti.notesmatter.callback.ActionModeCallback;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
+import me.slackti.notesmatter.ui.MainActivity;
 
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
@@ -28,21 +32,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private RelativeLayout bar_container;
     private FloatingActionButton fab;
 
-    private DatabaseHelper databaseHelper;
-
-    private ArrayList<Todo> todoList;
-    private LayoutInflater inflater;
     private Context context;
+
+    private LayoutInflater inflater;
+    private ArrayList<Todo> todoList;
+    private DatabaseHelper databaseHelper;
 
     private Animation fadeInAnim;
     private Animation fadeOutAnim;
 
     private int selectedPos = -1;
 
-    public TodoAdapter(ArrayList<Todo> todoList, Context context, RelativeLayout bar_container,
-                       FloatingActionButton fab) {
-        this.todoList = todoList;
-        this.inflater = LayoutInflater.from(context);
+    public TodoAdapter(Context context, RelativeLayout bar_container, FloatingActionButton fab) {
         this.context = context;
         this.bar_container = bar_container;
         this.fab = fab;
@@ -52,6 +53,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         fadeOutAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
         fadeOutAnim.setDuration(195);
 
+        inflater = LayoutInflater.from(context);
+        todoList = new ArrayList<>();
         databaseHelper = new DatabaseHelper(context);
 
         getItems();
@@ -207,8 +210,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             todoList.remove(position);
             this.notifyItemRemoved(position);
 
-            selectedPos = -1;
-            toggleSelected(selectedPos);
+            clearSelection();
 
             // To prevent operation from going out of bound when removing last item
             if(position < todoList.size()) {
@@ -227,8 +229,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             todoList.remove(position);
             this.notifyItemRemoved(position);
 
-            selectedPos = -1;
-            toggleSelected(selectedPos);
+            clearSelection();
 
             // To prevent operation from going out of bound when removing last item
             if(position < todoList.size()) {
@@ -238,4 +239,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             Toast.makeText(context, "Failed to remove item", Toast.LENGTH_LONG).show();
         }
     }
+
+    public void clearSelection() {
+        selectedPos = -1;
+        toggleSelected(selectedPos);
+    }
+
 }
