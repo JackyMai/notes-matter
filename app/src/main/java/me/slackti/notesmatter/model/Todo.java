@@ -6,20 +6,17 @@ public class Todo {
     private String id;
     private String title;
     private int position;
-    private boolean done;
 
     public Todo() {}
 
     public Todo(String title) {
         this.title = title;
-        this.done = false;
     }
 
-    public Todo(String id, String title, int position, boolean done) {
+    public Todo(String id, String title, int position) {
         this.id = id;
         this.title = title;
         this.position = position;
-        this.done = done;
     }
 
     public String getId() {
@@ -46,19 +43,10 @@ public class Todo {
         this.position = position;
     }
 
-    public boolean getDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
     public void setNull() {
         this.id = null;
         this.title = null;
         this.position = -1;
-        this.done = false;
     }
 
 }
