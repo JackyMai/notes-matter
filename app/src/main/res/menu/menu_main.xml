@@ -3,12 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="me.slackti.notesmatter.ui.MainActivity" >
 
-    <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="never" />-->
-
     <item
         android:id="@+id/history_button"
         android:icon="@drawable/ic_history_white_24dp"
