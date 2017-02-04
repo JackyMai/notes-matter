@@ -105,19 +105,17 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     }
 
     private void getDatabaseItems() {
-        Cursor listData = databaseHelper.getListContents();
+        Cursor listData = databaseHelper.getListItems();
 
         if(listData.getCount() > 0) {
             while(listData.moveToNext()) {
-                Todo newTodo = new Todo(listData.getString(0),
+                Todo todo = new Todo(listData.getString(0),
                         listData.getString(1),
                         listData.getInt(2),
                         listData.getInt(3) != 0); // Convert int to boolean
 
                 // Only add todos that are incomplete
-                if(!newTodo.getDone()) {
-                    todoList.add(newTodo);
-                }
+                todoList.add(todo);
             }
 
             // Sort arraylist according to item's position
