@@ -107,7 +107,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             while(listData.moveToNext()) {
                 Todo todo = new Todo(listData.getString(0),
                         listData.getString(1),
-                        listData.getInt(2)); // Convert int to boolean
+                        listData.getInt(2));
 
                 // Only add todos that are incomplete
                 todoList.add(todo);

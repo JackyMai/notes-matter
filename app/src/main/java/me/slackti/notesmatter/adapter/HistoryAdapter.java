@@ -4,10 +4,10 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 import me.slackti.notesmatter.R;
@@ -57,8 +57,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<TodoHolder> {
             while(listData.moveToNext()) {
                 Todo todo = new Todo(listData.getString(0),
                         listData.getString(1),
-                        listData.getInt(2),
-                        listData.getInt(3) != 0);   // Convert int to boolean
+                        listData.getInt(2));
 
                 todoList.add(todo);
             }
