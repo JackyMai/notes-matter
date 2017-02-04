@@ -195,7 +195,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     public void onItemDone(int position) {
         Todo todo = todoList.get(position);
 
-        if(databaseHelper.updateData(todo)) {
+        if(databaseHelper.moveData(todo)) {
             todoList.remove(position);
             this.notifyItemRemoved(position);
 
@@ -214,7 +214,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     public void onItemDismiss(int position) {
         Todo todo = todoList.get(position);
 
-        if(databaseHelper.deleteData(todo.getId())) {
+        if(databaseHelper.deleteData(todo)) {
             todoList.remove(position);
             this.notifyItemRemoved(position);
 
