@@ -38,9 +38,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    public Cursor getListContents() {
+    public Cursor getListItems() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL3 + "=0", null);
+    }
+
+    public Cursor getCompletedItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL3 + "=1", null);
     }
 
     public long addData(Todo todo) {
