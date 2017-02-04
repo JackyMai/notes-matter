@@ -52,17 +52,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getCompletedItems() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_INACTIVE, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_INACTIVE
+                + " ORDER BY " + COL0 + " DESC", null);
     }
 
     public long addData(Todo todo) {
+        return this.addData(todo, TABLE_ACTIVE);
+    }
+
+    private long addData(Todo todo, String TABLE_NAME) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, todo.getTitle());
         contentValues.put(COL2, todo.getPosition());
 
-        return db.insert(TABLE_ACTIVE, null, contentValues);
+        return db.insert(TABLE_NAME, null, contentValues);
     }
 
     public boolean updateListPosition(ArrayList<Todo> todoList, int start, int end) {
@@ -89,6 +94,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean moveData(Todo todo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long resultAdd = addData(todo, TABLE_INACTIVE);
+        boolean resultDelete = deleteData(todo);
+
+        if(resultAdd != -1 && resultDelete) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public boolean updateData(Todo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -106,10 +125,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean deleteData(String id) {
+    public boolean deleteData(Todo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        long result = db.delete(TABLE_ACTIVE, COL0 + " = ?", new String[] {id});
+        long result = db.delete(TABLE_ACTIVE, COL0 + " = ?", new String[] {todo.getId()});
 
         if(result == 0) {
             return false;
