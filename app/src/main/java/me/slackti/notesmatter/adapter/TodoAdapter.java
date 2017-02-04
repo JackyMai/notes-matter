@@ -45,15 +45,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         this.bar_container = bar_container;
         this.fab = fab;
 
-        fadeInAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
-        fadeInAnim.setDuration(225);
-        fadeOutAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
-        fadeOutAnim.setDuration(195);
-
         inflater = LayoutInflater.from(context);
         todoList = new ArrayList<>();
         databaseHelper = new DatabaseHelper(context);
 
+        setAnimation();
         getDatabaseItems();
     }
 
@@ -111,8 +107,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             while(listData.moveToNext()) {
                 Todo todo = new Todo(listData.getString(0),
                         listData.getString(1),
-                        listData.getInt(2),
-                        listData.getInt(3) != 0); // Convert int to boolean
+                        listData.getInt(2)); // Convert int to boolean
 
                 // Only add todos that are incomplete
                 todoList.add(todo);
@@ -199,7 +194,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     @Override
     public void onItemDone(int position) {
         Todo todo = todoList.get(position);
-        todo.setDone(true);
 
         if(databaseHelper.updateData(todo)) {
             todoList.remove(position);
@@ -238,6 +232,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private void clearSelection() {
         selectedPos = -1;
         toggleSelected(selectedPos);
+    }
+
+    private void setAnimation() {
+        fadeInAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+        fadeInAnim.setDuration(225);
+        fadeOutAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
+        fadeOutAnim.setDuration(195);
     }
 
 }
