@@ -28,7 +28,7 @@
 
         <include layout="@layout/content_main" />
 
-        <include layout="@layout/action_bar" />
+        <include layout="@layout/bar_action_main" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

@@ -1,6 +1,5 @@
 package me.slackti.notesmatter.listener;
 
-import android.util.Log;
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -17,7 +16,6 @@ public class DoneButtonListener implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         Todo todo = adapter.getSelectedItem();
-        Log.d("TEST RESPONSE", String.valueOf(todo.getPosition()));
         adapter.onItemDone(todo.getPosition());
     }
 }

@@ -4,8 +4,8 @@ import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import me.slackti.notesmatter.adapter.ItemTouchHelperAdapter;
-import me.slackti.notesmatter.adapter.ItemTouchHelperViewHolder;
+import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
+import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
 
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
