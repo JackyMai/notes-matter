@@ -21,11 +21,12 @@ import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
+import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
 
-    private RelativeLayout bar_container;
+    private RelativeLayout actionBar;
     private FloatingActionButton fab;
 
     private Context context;
@@ -40,9 +41,9 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     private int selectedPos = -1;
 
 
-    public TodoAdapter(Context context, RelativeLayout bar_container, FloatingActionButton fab) {
+    public TodoAdapter(Context context, RelativeLayout actionBar, FloatingActionButton fab) {
         this.context = context;
-        this.bar_container = bar_container;
+        this.actionBar = actionBar;
         this.fab = fab;
 
         inflater = LayoutInflater.from(context);
@@ -77,7 +78,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
 
     private void toggleSelected(int clickedPos) {
         if(selectedPos == clickedPos) {     // Deselect item
-            bar_container.startAnimation(fadeOutAnim);
+            actionBar.startAnimation(fadeOutAnim);
             fab.show();
 
             selectedPos = -1;
@@ -85,7 +86,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         } else {                            // Select item
             if(selectedPos == -1) {
                 fab.hide();
-                bar_container.startAnimation(fadeInAnim);   // Only fade in if nothing is selected
+                actionBar.startAnimation(fadeInAnim);   // Only fade in if nothing is selected
             }
 
             notifyItemChanged(selectedPos);     // Update previous position
@@ -93,15 +94,17 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             notifyItemChanged(selectedPos);     // Update new position
         }
 
-        bar_container.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
+        actionBar.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
     }
 
     public Todo getSelectedItem() {
         return todoList.get(selectedPos);
     }
 
-    private void getDatabaseItems() {
-        Cursor listData = databaseHelper.getListItems();
+    public void getDatabaseItems() {
+        todoList.clear();
+
+        Cursor listData = databaseHelper.getIncompleteItems();
 
         if(listData.getCount() > 0) {
             while(listData.moveToNext()) {
@@ -109,7 +112,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
                         listData.getString(1),
                         listData.getInt(2));
 
-                // Only add todos that are incomplete
+                if(todo.getPosition() == -1) {
+                    todo.setPosition(todoList.size());
+                }
+
                 todoList.add(todo);
             }
 
@@ -186,7 +192,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
             end = fromPosition;
         }
 
-        if(!databaseHelper.updateListPosition(todoList, start, end)) {
+        if(!databaseHelper.updateActiveItemPositions(todoList, start, end)) {
             Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
         }
     }
@@ -195,7 +201,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     public void onItemDone(int position) {
         Todo todo = todoList.get(position);
 
-        if(databaseHelper.moveData(todo)) {
+        if(databaseHelper.onItemDone(todo)) {
             todoList.remove(position);
             this.notifyItemRemoved(position);
 
