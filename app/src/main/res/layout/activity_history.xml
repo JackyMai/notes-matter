@@ -12,4 +12,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"/>
 
+    <include layout="@layout/bar_action_history" />
+
 </RelativeLayout>
