@@ -62,7 +62,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<TodoHolder> {
             public void onClick(View v) {
                 int position = todoHolder.getAdapterPosition();
                 toggleSelected(position);
-                Toast.makeText(context, "selectedPos: " + selectedPos, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -72,7 +71,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<TodoHolder> {
     @Override
     public void onBindViewHolder(TodoHolder holder, int position) {
         Todo todo = todoList.get(position);
-        holder.setTitle(todo.getTitle() + " " + todo.getId());
+        holder.setTitle(todo.getTitle());
         holder.selectedOverlay.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
     }
 
