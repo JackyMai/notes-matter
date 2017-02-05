@@ -45,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACTIVE);
     }
 
-    public Cursor getListItems() {
+    public Cursor getIncompleteItems() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_ACTIVE, null);
     }
@@ -56,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " ORDER BY " + COL0 + " DESC", null);
     }
 
+    // Add to active table by default
     public long addData(Todo todo) {
         return this.addData(todo, TABLE_ACTIVE);
     }
@@ -70,7 +71,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, contentValues);
     }
 
-    public boolean updateListPosition(ArrayList<Todo> todoList, int start, int end) {
+    public boolean updateActiveItemPositions(ArrayList<Todo> todoList, int start, int end) {
+        return this.updateItemPositions(todoList, TABLE_ACTIVE, start, end);
+    }
+
+    public boolean updateInactiveItemPositions(ArrayList<Todo> todoList, int start, int end) {
+        return this.updateItemPositions(todoList, TABLE_INACTIVE, start, end);
+    }
+
+    private boolean updateItemPositions(ArrayList<Todo> todoList, String TABLE_NAME, int start, int end) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         for(int i=start; i<=end; i++) {
@@ -84,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contentValues.put(COL1, todo.getTitle());
                 contentValues.put(COL2, i);
 
-                long result = db.update(TABLE_ACTIVE, contentValues, COL0 + " = ?", new String[] {todo.getId()});
+                long result = db.update(TABLE_NAME, contentValues, COL0 + " = ?", new String[] {todo.getId()});
                 if(result == 0) {
                     return false;
                 }
@@ -94,19 +103,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean moveData(Todo todo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        long resultAdd = addData(todo, TABLE_INACTIVE);
-        boolean resultDelete = deleteData(todo);
-
-        if(resultAdd != -1 && resultDelete) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean onItemDone(Todo todo) {
+        return this.moveData(todo, TABLE_ACTIVE, TABLE_INACTIVE);
     }
 
+    public boolean onItemUndone(Todo todo) {
+        todo.setPosition(-1);
+        return this.moveData(todo, TABLE_INACTIVE, TABLE_ACTIVE);
+    }
+
+    private boolean moveData(Todo todo, String fromTable, String toTable) {
+        long resultAdd = addData(todo, toTable);
+        boolean resultDelete = deleteData(todo, fromTable);
+
+        return resultAdd != -1 && resultDelete;
+    }
 
     public boolean updateData(Todo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -118,22 +129,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.update(TABLE_ACTIVE, contentValues, COL0 + " = ?", new String[] {todo.getId()});
 
-        if(result == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != 0;
     }
 
+    // Delete from active table by default
     public boolean deleteData(Todo todo) {
+        return this.deleteData(todo, TABLE_ACTIVE);
+    }
+
+    private boolean deleteData(Todo todo, String TABLE_NAME) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        long result = db.delete(TABLE_ACTIVE, COL0 + " = ?", new String[] {todo.getId()});
+        long result = db.delete(TABLE_NAME, COL0 + " = ?", new String[] {todo.getId()});
 
-        if(result == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != 0;
     }
 }
