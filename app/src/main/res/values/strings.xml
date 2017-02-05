@@ -10,4 +10,5 @@
     <string name="edit_button">Edit</string>
     <string name="delete_button">Delete</string>
     <string name="history_button">Completed todos</string>
+    <string name="undo_button">Undo</string>
 </resources>
