@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.callback.SimpleItemTouchHelperCallback;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -22,11 +20,12 @@ import me.slackti.notesmatter.listener.DeleteButtonListener;
 import me.slackti.notesmatter.listener.DoneButtonListener;
 import me.slackti.notesmatter.listener.EditButtonListener;
 import me.slackti.notesmatter.listener.FabListener;
-import me.slackti.notesmatter.model.Todo;
 
 import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity {
+
+    private TodoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +35,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final RelativeLayout barContainer = (RelativeLayout) findViewById(R.id.bar_container);
-        barContainer.setVisibility(GONE);
+        final RelativeLayout actionBar = (RelativeLayout) findViewById(R.id.main_action_bar);
+        actionBar.setVisibility(GONE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        TodoAdapter adapter = new TodoAdapter(this, barContainer, fab);
+        adapter = new TodoAdapter(this, actionBar, fab);
 
         fab.setOnClickListener(new FabListener(this, adapter));
 
@@ -81,4 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        adapter.getDatabaseItems();
+        adapter.notifyItemInserted(adapter.getItemCount());
+    }
+
 }
