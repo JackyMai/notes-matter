@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         editButton.setOnClickListener(new EditButtonListener(this, adapter));
 
         ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new DeleteButtonListener(adapter));
+        deleteButton.setOnClickListener(new DeleteButtonListener(this, adapter));
 
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
