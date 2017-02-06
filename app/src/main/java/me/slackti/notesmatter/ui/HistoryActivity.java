@@ -32,7 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
         undoneButton.setOnClickListener(new UndoneButtonListener(adapter));
 
-        RecyclerView recView = (RecyclerView) findViewById(R.id.history_list);
+        RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setAdapter(adapter);
     }
