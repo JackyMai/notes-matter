@@ -43,10 +43,4 @@ public class Todo {
         this.position = position;
     }
 
-    public void setNull() {
-        this.id = null;
-        this.title = null;
-        this.position = -1;
-    }
-
 }
