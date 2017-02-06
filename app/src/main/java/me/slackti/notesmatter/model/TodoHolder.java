@@ -33,6 +33,7 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
     public void onDraw() {
         if(Build.VERSION.SDK_INT >= 21) {
             itemView.setElevation(8);
+            itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
         } else {
             itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorItemDrag));
         }
@@ -45,6 +46,7 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
     public void onItemClear() {
         if(Build.VERSION.SDK_INT >= 21) {
             itemView.setElevation(0);
+            itemView.setBackgroundColor(0);
         } else {
             itemView.setBackgroundColor(Color.WHITE);
         }
