@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -53,9 +54,12 @@ public class MainActivity extends AppCompatActivity {
         ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new DeleteButtonListener(this, adapter));
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        recView.setLayoutManager(layoutManager);
         recView.setAdapter(adapter);
+        recView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
