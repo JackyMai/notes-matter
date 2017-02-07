@@ -6,7 +6,7 @@ A simple todo app created for the Android platform.
 - Implement selection mode properly
 - Limit task title to a certain length of character
 - Rebuild using external library for better performance
-- Add deadline functionality to database structure
+- Add the ability to set deadline for tasks
 - Implement dynamic layout to allow for:
   * Tasks with or without deadline
   * Tasks that span for more than a single line
