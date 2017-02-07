@@ -11,7 +11,9 @@ A simple todo app created for the Android platform.
   * Tasks with or without deadline
   * Tasks that span for more than a single line
 - Better support for pre-v21 (Kitkat) devices
+- Implement onUpgrade() for database operations
 - Better logo...?
 
-## Support
-Android 4.4 Kitkat or higher
+## Usage
+- Android 4.4 Kitkat or higher
+- Please uninstall the previous version before you install the new one
