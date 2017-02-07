@@ -16,4 +16,4 @@ A simple todo app created for the Android platform.
 
 ## Usage
 - Android 4.4 Kitkat or higher
-- Please uninstall the previous version before you install the new one
+- Please uninstall the app and try reinstalling if it crashes on startup
