@@ -2,6 +2,7 @@ package me.slackti.notesmatter.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -32,9 +33,12 @@ public class HistoryActivity extends AppCompatActivity {
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
         undoneButton.setOnClickListener(new UndoneButtonListener(adapter));
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setAdapter(adapter);
+        recView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
     }
 
     @Override
