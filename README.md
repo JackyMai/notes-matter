@@ -15,5 +15,5 @@ A simple todo app created for the Android platform.
 - Better logo...?
 
 ## Usage
-- Android 4.4 Kitkat or higher
+- Android 4.4 KitKat or higher
 - Please uninstall the app and try reinstalling if it crashes on startup
