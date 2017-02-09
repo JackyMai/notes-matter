@@ -4,79 +4,31 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.model.TodoHolder;
 import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 
 
-public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements ItemTouchHelperAdapter {
+public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
 
-    private RelativeLayout actionBar;
     private FloatingActionButton fab;
 
-    private Context context;
-
-    private LayoutInflater inflater;
-    private ArrayList<Todo> todoList;
-    private DatabaseHelper databaseHelper;
-
-    private Animation fadeInAnim;
-    private Animation fadeOutAnim;
-
-    private int selectedPos = -1;
-
-
     public TodoAdapter(Context context, RelativeLayout actionBar, FloatingActionButton fab) {
-        this.context = context;
-        this.actionBar = actionBar;
+        super(context, actionBar);
+
         this.fab = fab;
 
-        inflater = LayoutInflater.from(context);
-        todoList = new ArrayList<>();
-        databaseHelper = new DatabaseHelper(context);
-
-        setAnimation();
         getDatabaseItems();
     }
 
     @Override
-    public TodoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = inflater.inflate(R.layout.todo_item, parent, false);
-        final TodoHolder todoHolder = new TodoHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = todoHolder.getAdapterPosition();
-                toggleSelected(position);
-            }
-        });
-
-        return todoHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(TodoHolder holder, int position) {
-        Todo todo = todoList.get(position);
-        holder.setTitle(todo.getTitle());
-        holder.selectedOverlay.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    private void toggleSelected(int clickedPos) {
+    protected void toggleSelected(int clickedPos) {
         if(selectedPos == clickedPos) {     // Deselect item
             actionBar.startAnimation(fadeOutAnim);
             fab.show();
@@ -97,10 +49,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         actionBar.setVisibility(selectedPos == -1 ? View.GONE : View.VISIBLE);
     }
 
-    public Todo getSelectedItem() {
-        return todoList.get(selectedPos);
-    }
-
+    @Override
     public void getDatabaseItems() {
         todoList.clear();
 
@@ -127,11 +76,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
                 }
             });
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return todoList.size();
     }
 
     @Override
@@ -181,23 +125,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
     }
 
     @Override
-    public void updateItemPositions(int fromPosition, int toPosition) {
-        int start, end;
-
-        if(fromPosition < toPosition) {
-            start = fromPosition;
-            end = toPosition;
-        } else {
-            start = toPosition;
-            end = fromPosition;
-        }
-
-        if(!databaseHelper.updateActiveItemPositions(todoList, start, end)) {
-            Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
     public void onItemDone(int position) {
         Todo todo = todoList.get(position);
 
@@ -235,16 +162,20 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> implements Ite
         }
     }
 
-    private void clearSelection() {
-        selectedPos = -1;
-        toggleSelected(selectedPos);
-    }
+    @Override
+    public void updateItemPositions(int fromPosition, int toPosition) {
+        int start, end;
 
-    private void setAnimation() {
-        fadeInAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
-        fadeInAnim.setDuration(225);
-        fadeOutAnim = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
-        fadeOutAnim.setDuration(195);
-    }
+        if(fromPosition < toPosition) {
+            start = fromPosition;
+            end = toPosition;
+        } else {
+            start = toPosition;
+            end = fromPosition;
+        }
 
+        if(!databaseHelper.updateActiveItemPositions(todoList, start, end)) {
+            Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
+        }
+    }
 }
