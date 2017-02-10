@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         recView.setAdapter(adapter);
         recView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recView);
     }
