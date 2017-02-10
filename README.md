@@ -2,7 +2,7 @@
 A simple todo app created for the Android platform.
 
 ## Todo
-- Refactor adapters
+- ~~Refactor adapters~~
 - Implement selection mode properly
 - Limit task title to a certain length of character
 - Rebuild using external library for better performance
