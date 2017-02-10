@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
+import me.slackti.notesmatter.helper.AlertHelper;
 import me.slackti.notesmatter.model.Todo;
 
 
@@ -21,24 +22,7 @@ public class DeleteButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Do you want to delete this todo?");
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Todo todo = adapter.getSelectedItem();
-                adapter.onItemDismiss(todo.getPosition());
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("Oops", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alert = builder.create();
-        alert.show();
+        int position = adapter.getSelectedItem().getPosition();
+        AlertHelper.createDeleteDialog(context, adapter, position);
     }
 }
