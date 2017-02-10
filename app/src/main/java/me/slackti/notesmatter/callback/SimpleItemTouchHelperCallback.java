@@ -1,15 +1,18 @@
 package me.slackti.notesmatter.callback;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import me.slackti.notesmatter.helper.AlertHelper;
 import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
 
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
+    private Context context;
     private final ItemTouchHelperAdapter adapter;
 
     private int fromPosition = -1;
@@ -17,7 +20,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private boolean viewCleared;
 
-    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+    public SimpleItemTouchHelperCallback(Context context, ItemTouchHelperAdapter adapter) {
+        this.context = context;
         this.adapter = adapter;
     }
 
@@ -44,7 +48,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-        adapter.onItemDismiss(viewHolder.getAdapterPosition());
+        AlertHelper.createDeleteDialog(context, adapter, viewHolder.getAdapterPosition());
     }
 
     @Override
