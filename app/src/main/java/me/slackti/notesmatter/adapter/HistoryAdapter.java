@@ -25,7 +25,7 @@ public class HistoryAdapter extends BaseAdapter {
     }
 
     @Override
-    protected void toggleSelected(int clickedPos) {
+    public void toggleSelected(int clickedPos) {
         if(selectedPos == clickedPos) {     // Deselect item
             actionBar.startAnimation(fadeOutAnim);
 
