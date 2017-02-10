@@ -9,20 +9,29 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.slackti.notesmatter.R;
+import me.slackti.notesmatter.adapter.BaseAdapter;
 import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
 
 
-public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder,
+        View.OnClickListener {
 
     private TextView title;
     public View selectedOverlay;
     private Context context;
 
-    public TodoHolder(View itemView) {
+    private BaseAdapter adapter;
+
+    public TodoHolder(View itemView, BaseAdapter adapter) {
         super(itemView);
+
         title = (TextView) itemView.findViewById(R.id.todo_title);
         selectedOverlay = itemView.findViewById(R.id.selected_overlay);
         context = itemView.getContext();
+
+        this.adapter = adapter;
+
+        itemView.setOnClickListener(this);
     }
 
     public void setTitle(String title) {
@@ -50,5 +59,10 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
         } else {
             itemView.setBackgroundColor(Color.WHITE);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        adapter.toggleSelected(getAdapterPosition());
     }
 }

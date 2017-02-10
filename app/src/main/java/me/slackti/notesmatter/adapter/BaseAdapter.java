@@ -46,16 +46,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
     @Override
     public TodoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = inflater.inflate(R.layout.todo_item, parent, false);
-        final TodoHolder todoHolder = new TodoHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = todoHolder.getAdapterPosition();
-                toggleSelected(position);
-            }
-        });
-
-        return todoHolder;
+        return new TodoHolder(view, this);
     }
 
     @Override
@@ -70,7 +61,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         return todoList.size();
     }
 
-    protected abstract void toggleSelected(int clickedPos);
+    public abstract void toggleSelected(int clickedPos);
 
     protected abstract void getDatabaseItems();
 
