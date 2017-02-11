@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import me.slackti.notesmatter.model.Todo;
+import me.slackti.notesmatter.touch.ClickListener;
 import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 
 
@@ -19,8 +20,8 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
 
     private FloatingActionButton fab;
 
-    public TodoAdapter(Context context, RelativeLayout actionBar, FloatingActionButton fab) {
-        super(context, actionBar);
+    public TodoAdapter(Context context, ClickListener clickListener, RelativeLayout actionBar, FloatingActionButton fab) {
+        super(context, clickListener, actionBar);
 
         this.fab = fab;
 

@@ -16,10 +16,12 @@ import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
+import me.slackti.notesmatter.touch.ClickListener;
 
 public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     Context context;
+    private ClickListener clickListener;
 
     ArrayList<Todo> todoList;
     DatabaseHelper databaseHelper;
@@ -32,8 +34,9 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     int selectedPos = -1;
 
-    BaseAdapter(Context context, RelativeLayout actionBar) {
+    BaseAdapter(Context context, ClickListener clickListener, RelativeLayout actionBar) {
         this.context = context;
+        this.clickListener = clickListener;
         this.actionBar = actionBar;
 
         inflater = LayoutInflater.from(context);
@@ -46,7 +49,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
     @Override
     public TodoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = inflater.inflate(R.layout.todo_item, parent, false);
-        return new TodoHolder(view, this);
+        return new TodoHolder(view, clickListener);
     }
 
     @Override
@@ -71,9 +74,15 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         return todoList.get(selectedPos);
     }
 
-    void clearSelection() {
+    public int getSelectedPos() {
+        return selectedPos;
+    }
+
+    public void clearSelection() {
+        int position = selectedPos;
         selectedPos = -1;
         toggleSelected(selectedPos);
+        notifyItemChanged(position);
     }
 
     private void setAnimation() {
