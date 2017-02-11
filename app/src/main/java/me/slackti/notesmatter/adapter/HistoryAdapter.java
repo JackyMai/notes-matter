@@ -46,7 +46,7 @@ public class HistoryAdapter extends BaseAdapter {
     }
 
     @Override
-    protected void getDatabaseItems() {
+    public void getDatabaseItems() {
         Cursor listData = databaseHelper.getCompletedItems();
 
         if(listData.getCount() > 0) {

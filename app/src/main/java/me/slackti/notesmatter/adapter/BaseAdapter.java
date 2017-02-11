@@ -66,7 +66,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     public abstract void toggleSelected(int clickedPos);
 
-    protected abstract void getDatabaseItems();
+    public abstract void getDatabaseItems();
 
     protected abstract void updateItemPositions(int fromPosition, int toPosition);
 
