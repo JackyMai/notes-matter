@@ -3,8 +3,6 @@ package me.slackti.notesmatter.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,15 +21,11 @@ import me.slackti.notesmatter.listener.DeleteButtonListener;
 import me.slackti.notesmatter.listener.DoneButtonListener;
 import me.slackti.notesmatter.listener.EditButtonListener;
 import me.slackti.notesmatter.listener.FabListener;
-import me.slackti.notesmatter.touch.ClickListener;
+import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 
 import static android.view.View.GONE;
 
-public class MainActivity extends AppCompatActivity implements ClickListener {
-
-    private TodoAdapter adapter;
-    private ActionMode actionMode;
-    private ActionModeCallback actionModeCallback;
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +42,19 @@ public class MainActivity extends AppCompatActivity implements ClickListener {
 
         adapter = new TodoAdapter(this, this, actionBar, fab);
 
-        actionModeCallback = new ActionModeCallback(adapter);
+        actionModeCallback = new ActionModeCallback(this, adapter);
 
-        fab.setOnClickListener(new FabListener(this, adapter));
+        fab.setOnClickListener(new FabListener(this, (TodoAdapter) adapter));
 
         // ImageButton
         ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
-        doneButton.setOnClickListener(new DoneButtonListener(adapter));
+        doneButton.setOnClickListener(new DoneButtonListener((TodoAdapter) adapter));
 
         ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
-        editButton.setOnClickListener(new EditButtonListener(this, adapter));
+        editButton.setOnClickListener(new EditButtonListener(this, (TodoAdapter) adapter));
 
         ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new DeleteButtonListener(this, adapter));
+        deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter));
 
         // RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -71,27 +65,9 @@ public class MainActivity extends AppCompatActivity implements ClickListener {
         recView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
 
         // ItemTouchHelper
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, adapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, (ItemTouchHelperAdapter) adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recView);
-    }
-
-    @Override
-    public void onItemClicked(int position) {
-        if(actionMode == null) {
-            actionMode = startSupportActionMode(actionModeCallback);
-        }
-
-        toggleSelected(position);
-    }
-
-    private void toggleSelected(int position) {
-        adapter.toggleSelected(position);
-
-        if(adapter.getSelectedPos() == -1) {
-            actionMode.finish();
-            actionMode = null;
-        }
     }
 
     @Override

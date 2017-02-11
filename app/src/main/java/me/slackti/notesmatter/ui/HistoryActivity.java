@@ -1,8 +1,6 @@
 package me.slackti.notesmatter.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +12,10 @@ import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.HistoryAdapter;
 import me.slackti.notesmatter.callback.ActionModeCallback;
 import me.slackti.notesmatter.listener.UndoneButtonListener;
-import me.slackti.notesmatter.touch.ClickListener;
 
 import static android.view.View.GONE;
 
-public class HistoryActivity extends AppCompatActivity implements ClickListener {
-
-    private HistoryAdapter adapter;
-    private ActionMode actionMode;
-    private ActionModeCallback actionModeCallback;
+public class HistoryActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +29,10 @@ public class HistoryActivity extends AppCompatActivity implements ClickListener 
         actionBar.setVisibility(GONE);
 
         adapter = new HistoryAdapter(this, this, actionBar);
-        actionModeCallback = new ActionModeCallback(adapter);
+        actionModeCallback = new ActionModeCallback(this, adapter);
 
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
-        undoneButton.setOnClickListener(new UndoneButtonListener(adapter));
+        undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -61,21 +54,4 @@ public class HistoryActivity extends AppCompatActivity implements ClickListener 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClicked(int position) {
-        if(actionMode == null) {
-            actionMode = startSupportActionMode(actionModeCallback);
-        }
-
-        toggleSelected(position);
-    }
-
-    private void toggleSelected(int position) {
-        adapter.toggleSelected(position);
-
-        if(adapter.getSelectedPos() == -1) {
-            actionMode.finish();
-            actionMode = null;
-        }
-    }
 }
