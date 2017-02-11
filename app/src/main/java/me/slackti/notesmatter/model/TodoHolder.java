@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.adapter.BaseAdapter;
+import me.slackti.notesmatter.touch.ClickListener;
 import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
 
 
@@ -20,16 +20,16 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
     public View selectedOverlay;
     private Context context;
 
-    private BaseAdapter adapter;
+    private ClickListener clickListener;
 
-    public TodoHolder(View itemView, BaseAdapter adapter) {
+    public TodoHolder(View itemView, ClickListener clickListener) {
         super(itemView);
 
         title = (TextView) itemView.findViewById(R.id.todo_title);
         selectedOverlay = itemView.findViewById(R.id.selected_overlay);
         context = itemView.getContext();
 
-        this.adapter = adapter;
+        this.clickListener = clickListener;
 
         itemView.setOnClickListener(this);
     }
@@ -63,6 +63,8 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onClick(View v) {
-        adapter.toggleSelected(getAdapterPosition());
+        if(clickListener != null) {
+            clickListener.onItemClicked(getAdapterPosition());
+        }
     }
 }
