@@ -47,13 +47,13 @@ public class MainActivity extends BaseActivity {
 
         // ImageButton
         ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
-        doneButton.setOnClickListener(new DoneButtonListener((TodoAdapter) adapter));
+        doneButton.setOnClickListener(new DoneButtonListener((TodoAdapter) adapter, this));
 
         ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
-        editButton.setOnClickListener(new EditButtonListener(this, (TodoAdapter) adapter));
+        editButton.setOnClickListener(new EditButtonListener(this, (TodoAdapter) adapter, this));
 
         ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter));
+        deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter, this));
 
         // RecyclerView
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);

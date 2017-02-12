@@ -35,7 +35,7 @@ public class HistoryActivity extends BaseActivity {
         actionModeCallback = new ActionModeCallback(this, adapter);
 
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
-        undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter));
+        undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter, this));
 
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
