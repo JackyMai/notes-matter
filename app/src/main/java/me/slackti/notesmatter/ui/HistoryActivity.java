@@ -23,7 +23,10 @@ public class HistoryActivity extends BaseActivity {
         setContentView(R.layout.activity_history);
 
         setTitle("History");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         final RelativeLayout actionBar = (RelativeLayout) findViewById(R.id.history_action_bar);
         actionBar.setVisibility(GONE);
@@ -34,12 +37,9 @@ public class HistoryActivity extends BaseActivity {
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
         undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter));
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setAdapter(adapter);
-        recView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
     }
 
     @Override

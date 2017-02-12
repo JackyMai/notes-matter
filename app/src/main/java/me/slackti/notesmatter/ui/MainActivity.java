@@ -3,7 +3,6 @@ package me.slackti.notesmatter.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -57,12 +56,9 @@ public class MainActivity extends BaseActivity {
         deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter));
 
         // RecyclerView
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
-        recView.setLayoutManager(layoutManager);
+        recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setAdapter(adapter);
-        recView.addItemDecoration(new DividerItemDecoration(this, layoutManager.getOrientation()));
 
         // ItemTouchHelper
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, (ItemTouchHelperAdapter) adapter);
