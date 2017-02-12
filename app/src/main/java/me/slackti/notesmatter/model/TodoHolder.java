@@ -1,7 +1,9 @@
 package me.slackti.notesmatter.model;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -16,24 +18,24 @@ import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
 public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder,
         View.OnClickListener {
 
-    public TextView title;
     private Context context;
+    public TextView textView;
 
     private ClickListener clickListener;
 
     public TodoHolder(View itemView, ClickListener clickListener) {
         super(itemView);
-
-        title = (TextView) itemView.findViewById(R.id.todo_title);
-        context = itemView.getContext();
-
         this.clickListener = clickListener;
+
+        context = itemView.getContext();
+        textView = (TextView) itemView.findViewById(R.id.todo_title);
+        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Roboto_Slab/RobotoSlab-Regular.ttf"));
 
         itemView.setOnClickListener(this);
     }
 
     public void setTitle(String title) {
-        this.title.setText(title);
+        this.textView.setText(title);
     }
 
     @Override
