@@ -8,4 +8,6 @@
     <color name="colorSecondaryDark">#FFA000</color>
     <color name="colorItemSelected">#FCE4EC</color>
     <color name="colorItemDrag">#F5F5F5</color>
+    <color name="colorActionModePrimary">#CFD8DC</color>
+    <color name="colorActionModePrimaryDark">#90A4AE</color>
 </resources>
