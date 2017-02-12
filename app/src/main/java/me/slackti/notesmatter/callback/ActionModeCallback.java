@@ -1,6 +1,8 @@
 package me.slackti.notesmatter.callback;
 
 
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +28,11 @@ public class ActionModeCallback implements ActionMode.Callback {
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        if(Build.VERSION.SDK_INT >= 21) {
+            activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.colorActionModePrimaryDark));
+            return true;
+        }
+
         return false;
     }
 
@@ -36,6 +43,10 @@ public class ActionModeCallback implements ActionMode.Callback {
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
+        if(Build.VERSION.SDK_INT >= 21) {
+            activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.colorSecondaryDark));
+        }
+
         adapter.clearSelection();
         activity.setActionMode(null);
     }
