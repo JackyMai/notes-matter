@@ -2,6 +2,7 @@ package me.slackti.notesmatter.adapter;
 
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +57,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
     public void onBindViewHolder(TodoHolder holder, int position) {
         Todo todo = todoList.get(position);
         holder.setTitle(todo.getTitle());
-        holder.selectedOverlay.setVisibility(selectedPos == position ? View.VISIBLE : View.INVISIBLE);
+        holder.title.setBackgroundColor(selectedPos == position ? ContextCompat.getColor(context, R.color.colorItemSelected) : 0);
     }
 
     @Override
