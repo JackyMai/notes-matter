@@ -16,9 +16,10 @@ import android.widget.ImageButton;
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.model.Todo;
+import me.slackti.notesmatter.touch.ClickListener;
 
 
-public class EditButtonListener implements View.OnClickListener{
+public class EditButtonListener extends BaseListener {
     private Context context;
     private TodoAdapter adapter;
     private AlertDialog dialog;
@@ -27,7 +28,8 @@ public class EditButtonListener implements View.OnClickListener{
     private Todo todo;
 
 
-    public EditButtonListener(Context context, TodoAdapter adapter) {
+    public EditButtonListener(Context context, TodoAdapter adapter, ClickListener clickListener) {
+        super(clickListener);
         this.context = context;
         this.adapter = adapter;
     }
@@ -78,6 +80,8 @@ public class EditButtonListener implements View.OnClickListener{
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+
+        super.onClick(v);
     }
 
     private void checkForNewLine(CharSequence s, int start, int count) {

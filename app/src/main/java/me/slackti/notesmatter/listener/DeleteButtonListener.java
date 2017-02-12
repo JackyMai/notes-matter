@@ -9,13 +9,15 @@ import android.view.View;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.helper.AlertHelper;
 import me.slackti.notesmatter.model.Todo;
+import me.slackti.notesmatter.touch.ClickListener;
 
 
-public class DeleteButtonListener implements View.OnClickListener {
+public class DeleteButtonListener extends BaseListener {
     private Context context;
     private TodoAdapter adapter;
 
-    public DeleteButtonListener(Context context, TodoAdapter adapter) {
+    public DeleteButtonListener(Context context, TodoAdapter adapter, ClickListener clickListener) {
+        super(clickListener);
         this.context = context;
         this.adapter = adapter;
     }
@@ -24,5 +26,6 @@ public class DeleteButtonListener implements View.OnClickListener {
     public void onClick(View v) {
         int position = adapter.getSelectedItem().getPosition();
         AlertHelper.createDeleteDialog(context, adapter, position);
+        super.onClick(v);
     }
 }
