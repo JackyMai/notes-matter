@@ -15,8 +15,8 @@ import me.slackti.notesmatter.touch.TouchListener;
 
 public class HistoryAdapter extends BaseAdapter {
 
-    public HistoryAdapter(Context context, TouchListener clickListener, RelativeLayout actionBar) {
-        super(context, clickListener, actionBar);
+    public HistoryAdapter(Context context, TouchListener touchListener, RelativeLayout actionBar) {
+        super(context, touchListener, actionBar);
 
         getDatabaseItems();
 

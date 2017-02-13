@@ -20,8 +20,8 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
 
     private FloatingActionButton fab;
 
-    public TodoAdapter(Context context, TouchListener clickListener, RelativeLayout actionBar, FloatingActionButton fab) {
-        super(context, clickListener, actionBar);
+    public TodoAdapter(Context context, TouchListener touchListener, RelativeLayout actionBar, FloatingActionButton fab) {
+        super(context, touchListener, actionBar);
 
         this.fab = fab;
 

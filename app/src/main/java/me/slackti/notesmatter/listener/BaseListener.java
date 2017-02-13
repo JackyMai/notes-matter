@@ -6,16 +6,16 @@ import android.view.View;
 import me.slackti.notesmatter.touch.TouchListener;
 
 public class BaseListener implements View.OnClickListener {
-    private TouchListener clickListener;
+    private TouchListener touchListener;
 
-    BaseListener(TouchListener clickListener) {
-        this.clickListener = clickListener;
+    BaseListener(TouchListener touchListener) {
+        this.touchListener = touchListener;
     }
 
     @Override
     public void onClick(View v) {
-        if(clickListener != null) {
-            clickListener.onSelectionCleared();
+        if(touchListener != null) {
+            touchListener.onSelectionCleared();
         }
     }
 

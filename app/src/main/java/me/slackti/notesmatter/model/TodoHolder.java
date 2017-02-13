@@ -20,11 +20,11 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
     private Context context;
     public TextView textView;
 
-    private TouchListener clickListener;
+    private TouchListener touchListener;
 
-    public TodoHolder(View itemView, TouchListener clickListener) {
+    public TodoHolder(View itemView, TouchListener touchListener) {
         super(itemView);
-        this.clickListener = clickListener;
+        this.touchListener = touchListener;
 
         context = itemView.getContext();
         textView = (TextView) itemView.findViewById(R.id.todo_title);
@@ -62,8 +62,8 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onClick(View v) {
-        if(clickListener != null) {
-            clickListener.onItemClicked(getAdapterPosition());
+        if(touchListener != null) {
+            touchListener.onItemClicked(getAdapterPosition());
         }
     }
 }
