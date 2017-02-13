@@ -25,7 +25,10 @@ public class DeleteButtonListener extends BaseListener {
     @Override
     public void onClick(View v) {
         int position = adapter.getSelectedItem().getPosition();
-        AlertHelper.createDeleteDialog(context, adapter, position);
+
+        AlertHelper alertHelper = new AlertHelper();
+        alertHelper.createDeleteDialog(context, adapter, position);
+
         super.onClick(v);
     }
 }
