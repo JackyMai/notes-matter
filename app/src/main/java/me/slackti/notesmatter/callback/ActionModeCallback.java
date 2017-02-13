@@ -47,7 +47,7 @@ public class ActionModeCallback implements ActionMode.Callback {
             activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.colorSecondaryDark));
         }
 
-        adapter.clearSelection();
         activity.setActionMode(null);
+        adapter.clearSelection();
     }
 }
