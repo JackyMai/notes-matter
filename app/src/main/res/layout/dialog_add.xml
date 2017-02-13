@@ -38,14 +38,16 @@
         android:padding="2dp"
         android:background="@drawable/background_dialog_bottom" >
 
-        <!--<Button-->
-            <!--android:id="@+id/dialog_cancel_button"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--style="?android:attr/borderlessButtonStyle"-->
-            <!--android:text="@string/cancel_button"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_toStartOf="@+id/dialog_add_button" />-->
+        <TextView
+            android:id="@+id/word_count"
+            android:text="140"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/dialog_add_button"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"/>
 
         <ImageButton
             android:id="@+id/dialog_add_button"

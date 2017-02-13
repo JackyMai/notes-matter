@@ -3,6 +3,7 @@ package me.slackti.notesmatter.listener;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -22,6 +24,8 @@ public class FabListener implements View.OnClickListener {
     private TodoAdapter adapter;
     private AlertDialog dialog;
     private EditText editText;
+
+    final private int WORD_LIMIT = 140;
 
     public FabListener(Context context, TodoAdapter adapter) {
         this.context = context;
@@ -39,22 +43,29 @@ public class FabListener implements View.OnClickListener {
 
         dialog = builder.create();
 
+        final TextView word_count = (TextView) dialog_view.findViewById(R.id.word_count);
         final ImageButton add_button = (ImageButton) dialog_view.findViewById(R.id.dialog_add_button);
-//        add_button.setEnabled(false);
 
-//        Button cancel_button = (Button) dialog_view.findViewById(R.id.dialog_cancel_button);
+        final int defaultColor = word_count.getCurrentTextColor();
 
         editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if(s.toString().trim().isEmpty()) {
-//                    add_button.setEnabled(false);
-//                } else {
-//                    add_button.setEnabled(true);
-//                }
+                if(!checkForNewLine(s, start, count)) {
+                    int remainingChar = WORD_LIMIT - s.length();
+                    word_count.setText(String.valueOf(remainingChar));
 
-                checkForNewLine(s, start, count);
+                    if(remainingChar < 0) {
+                        word_count.setTextColor(Color.RED);
+                        add_button.setEnabled(false);
+                        add_button.setColorFilter(Color.GRAY);
+                    } else {
+                        word_count.setTextColor(defaultColor);
+                        add_button.setEnabled(true);
+                        add_button.setColorFilter(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null));
+                    }
+                }
             }
 
             @Override
@@ -75,20 +86,16 @@ public class FabListener implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-//        cancel_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.cancel();
-//            }
-//        });
 
-        // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if(dialog.getWindow() != null) {
+            // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
-    private void checkForNewLine(CharSequence s, int start, int count) {
+    private boolean checkForNewLine(CharSequence s, int start, int count) {
         int end = start + count;
 
         for(int i = start; i < end; i++) {
@@ -99,7 +106,10 @@ public class FabListener implements View.OnClickListener {
                 }
 
                 dialog.dismiss();
+                return true;
             }
         }
+
+        return false;
     }
 }

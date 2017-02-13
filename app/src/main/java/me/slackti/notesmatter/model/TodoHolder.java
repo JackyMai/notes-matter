@@ -28,7 +28,8 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
         context = itemView.getContext();
         textView = (TextView) itemView.findViewById(R.id.todo_title);
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Roboto_Slab/RobotoSlab-Regular.ttf"));
+        textView.setTypeface(Typeface.createFromAsset(context.getAssets(),
+                "fonts/Roboto_Slab/RobotoSlab-Regular.ttf"));
 
         itemView.setOnClickListener(this);
     }
