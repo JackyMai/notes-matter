@@ -23,38 +23,37 @@ import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 
 public class AlertHelper {
 
+    private final int WORD_LIMIT = 140;
+    private final int ADD = 0;
+    private final int EDIT = 1;
+
     private TodoAdapter adapter;
     private AlertDialog dialog;
     private EditText editText;
     private Todo todo;
 
-    public void createEditDialog(final Context context, final TodoAdapter adapter, final int position) {
+    private TextView word_count;
+    private ImageButton add_button;
+
+    private void createInputDialog(final Context context, final TodoAdapter adapter, final int intention) {
         this.adapter = adapter;
-
-        final int WORD_LIMIT = 140;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialog_view = inflater.inflate(R.layout.dialog_add, null);
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(dialog_view);
 
-        final TextView word_count = (TextView) dialog_view.findViewById(R.id.word_count);
-        final ImageButton add_button = (ImageButton) dialog_view.findViewById(R.id.dialog_add_button);
+        dialog = builder.create();
+
+        word_count = (TextView) dialog_view.findViewById(R.id.word_count);
         final int defaultColor = word_count.getCurrentTextColor();
 
-        dialog = builder.create();
-        todo = adapter.getTodoItem(position);
-
-        word_count.setText(String.valueOf(WORD_LIMIT - todo.getTitle().length()));
-
+        add_button = (ImageButton) dialog_view.findViewById(R.id.dialog_add_button);
         editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
-        editText.setText(todo.getTitle());
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!checkForNewLine(s, start, count)) {
+                if(!checkForNewLine(s, start, count, intention)) {
                     int remainingChar = WORD_LIMIT - s.length();
                     word_count.setText(String.valueOf(remainingChar));
 
@@ -77,6 +76,33 @@ public class AlertHelper {
             public void afterTextChanged(Editable s) {}
         });
 
+        if(dialog.getWindow() != null) {
+            // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    public void createAddDialog(final Context context, final TodoAdapter adapter) {
+        createInputDialog(context, adapter, ADD);
+
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = editText.getText().toString().trim();
+                if(!input.isEmpty()) {
+                    adapter.onItemAdd(new Todo(input));
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void createEditDialog(final Context context, final TodoAdapter adapter, final int position) {
+        createInputDialog(context, adapter, EDIT);
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +111,6 @@ public class AlertHelper {
                     todo.setTitle(input);
                     adapter.onItemUpdate(todo);
                 }
-
                 dialog.dismiss();
             }
         });
@@ -97,10 +122,10 @@ public class AlertHelper {
             }
         });
 
-        if(dialog.getWindow() != null) {
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        }
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        todo = adapter.getTodoItem(position);
+        word_count.setText(String.valueOf(WORD_LIMIT - todo.getTitle().length()));
+        editText.setText(todo.getTitle());
+
         dialog.show();
     }
 
@@ -126,15 +151,19 @@ public class AlertHelper {
         alert.show();
     }
 
-    private boolean checkForNewLine(CharSequence s, int start, int count) {
+    private boolean checkForNewLine(CharSequence s, int start, int count, int intention) {
         int end = start + count;
 
         for(int i = start; i < end; i++) {
             if (s.charAt(i) == '\n') {      // Enter key detected
                 String input = editText.getText().toString().trim();
                 if (!input.isEmpty()) {      // If string is empty, close dialog
-                    todo.setTitle(input);
-                    adapter.onItemUpdate(todo);
+                    if(intention == ADD) {
+                        adapter.onItemAdd(new Todo(input));
+                    } else {
+                        todo.setTitle(input);
+                        adapter.onItemUpdate(todo);
+                    }
                 }
 
                 dialog.dismiss();
