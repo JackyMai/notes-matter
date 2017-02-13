@@ -4,14 +4,14 @@ import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.ClickListener;
+import me.slackti.notesmatter.touch.TouchListener;
 
 
 public class DoneButtonListener extends BaseListener {
     private TodoAdapter adapter;
 
-    public DoneButtonListener(TodoAdapter adapter, ClickListener clickListener) {
-        super(clickListener);
+    public DoneButtonListener(TodoAdapter adapter, TouchListener touchListener) {
+        super(touchListener);
         this.adapter = adapter;
     }
 

@@ -17,12 +17,12 @@ import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.database.DatabaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
-import me.slackti.notesmatter.touch.ClickListener;
+import me.slackti.notesmatter.touch.TouchListener;
 
 public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     Context context;
-    private ClickListener clickListener;
+    private TouchListener clickListener;
 
     ArrayList<Todo> todoList;
     DatabaseHelper databaseHelper;
@@ -35,7 +35,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     int selectedPos = -1;
 
-    BaseAdapter(Context context, ClickListener clickListener, RelativeLayout actionBar) {
+    BaseAdapter(Context context, TouchListener clickListener, RelativeLayout actionBar) {
         this.context = context;
         this.clickListener = clickListener;
         this.actionBar = actionBar;
@@ -88,6 +88,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         selectedPos = -1;
         toggleSelected(selectedPos);
         notifyItemChanged(position);
+        clickListener.onSelectionCleared();
     }
 
     private void setAnimation() {

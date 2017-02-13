@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.touch.ClickListener;
 import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
+import me.slackti.notesmatter.touch.TouchListener;
 
 
 public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder,
@@ -20,9 +20,9 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
     private Context context;
     public TextView textView;
 
-    private ClickListener clickListener;
+    private TouchListener clickListener;
 
-    public TodoHolder(View itemView, ClickListener clickListener) {
+    public TodoHolder(View itemView, TouchListener clickListener) {
         super(itemView);
         this.clickListener = clickListener;
 

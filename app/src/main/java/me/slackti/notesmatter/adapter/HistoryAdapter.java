@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.ClickListener;
+import me.slackti.notesmatter.touch.TouchListener;
 
 public class HistoryAdapter extends BaseAdapter {
 
-    public HistoryAdapter(Context context, ClickListener clickListener, RelativeLayout actionBar) {
+    public HistoryAdapter(Context context, TouchListener clickListener, RelativeLayout actionBar) {
         super(context, clickListener, actionBar);
 
         getDatabaseItems();

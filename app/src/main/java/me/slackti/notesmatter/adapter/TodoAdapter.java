@@ -12,15 +12,15 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.ClickListener;
 import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
+import me.slackti.notesmatter.touch.TouchListener;
 
 
 public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
 
     private FloatingActionButton fab;
 
-    public TodoAdapter(Context context, ClickListener clickListener, RelativeLayout actionBar, FloatingActionButton fab) {
+    public TodoAdapter(Context context, TouchListener clickListener, RelativeLayout actionBar, FloatingActionButton fab) {
         super(context, clickListener, actionBar);
 
         this.fab = fab;
@@ -99,6 +99,8 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
     public void onItemUpdate(Todo todo) {
         if(databaseHelper.updateData(todo)) {
             this.notifyItemChanged(todo.getPosition());
+
+            clearSelection();
         } else {
             Toast.makeText(context, "Failed to edit todo!", Toast.LENGTH_SHORT).show();
         }

@@ -3,19 +3,19 @@ package me.slackti.notesmatter.listener;
 
 import android.view.View;
 
-import me.slackti.notesmatter.touch.ClickListener;
+import me.slackti.notesmatter.touch.TouchListener;
 
 public class BaseListener implements View.OnClickListener {
-    private ClickListener clickListener;
+    private TouchListener clickListener;
 
-    BaseListener(ClickListener clickListener) {
+    BaseListener(TouchListener clickListener) {
         this.clickListener = clickListener;
     }
 
     @Override
     public void onClick(View v) {
         if(clickListener != null) {
-            clickListener.onButtonClicked();
+            clickListener.onSelectionCleared();
         }
     }
 
