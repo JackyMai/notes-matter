@@ -46,7 +46,7 @@ public class AlertHelper {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkForNewLine(s, start, before);
+                checkForNewLine(s, start, count);
             }
 
             @Override
