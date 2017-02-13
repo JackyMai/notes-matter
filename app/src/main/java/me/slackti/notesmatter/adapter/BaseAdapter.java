@@ -65,6 +65,10 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         return todoList.size();
     }
 
+    public Todo getTodoItem(int index) {
+        return todoList.get(index);
+    }
+
     public abstract void toggleSelected(int clickedPos);
 
     public abstract void getDatabaseItems();

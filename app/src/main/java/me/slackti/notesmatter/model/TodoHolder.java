@@ -1,7 +1,6 @@
 package me.slackti.notesmatter.model;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
