@@ -1,6 +1,7 @@
 package me.slackti.notesmatter.helper;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,10 +26,7 @@ import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 public class AlertHelper {
 
     private final int WORD_LIMIT = 140;
-    private final int ADD = 0;
-    private final int EDIT = 1;
 
-    private TodoAdapter adapter;
     private AlertDialog dialog;
     private EditText editText;
     private Todo todo;
@@ -35,11 +34,9 @@ public class AlertHelper {
     private TextView word_count;
     private ImageButton add_button;
 
-    private void createInputDialog(final Context context, final TodoAdapter adapter, final int intention) {
-        this.adapter = adapter;
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialog_view = inflater.inflate(R.layout.dialog_add, null);
+    private void createInputDialog(final Context context) {
+        @SuppressLint("InflateParams")
+        View dialog_view = LayoutInflater.from(context).inflate(R.layout.dialog_add, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(dialog_view);
 
@@ -53,19 +50,18 @@ public class AlertHelper {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!checkForNewLine(s, start, count, intention)) {
-                    int remainingChar = WORD_LIMIT - s.length();
-                    word_count.setText(String.valueOf(remainingChar));
+                int remainingChar = WORD_LIMIT - s.toString().trim().length();
 
-                    if(remainingChar < 0) {
-                        word_count.setTextColor(Color.RED);
-                        add_button.setEnabled(false);
-                        add_button.setColorFilter(Color.GRAY);
-                    } else {
-                        word_count.setTextColor(defaultColor);
-                        add_button.setEnabled(true);
-                        add_button.setColorFilter(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null));
-                    }
+                word_count.setText(String.valueOf(remainingChar));
+
+                if(remainingChar < 0) {
+                    word_count.setTextColor(Color.RED);
+                    add_button.setEnabled(false);
+                    add_button.setColorFilter(Color.GRAY);
+                } else {
+                    word_count.setTextColor(defaultColor);
+                    add_button.setEnabled(true);
+                    add_button.setColorFilter(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null));
                 }
             }
 
@@ -73,18 +69,33 @@ public class AlertHelper {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().trim().isEmpty()) {   // Input is not whitespace
+                    if(s.charAt(s.length()-1) == '\n') {    // Last character is new line
+                        if(add_button.isEnabled()) {
+                            add_button.callOnClick();
+                        } else {
+                            // Last character is new line but button is disabled, enter key will do nothing
+                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                            s.delete(s.length()-1, s.length());
+                        }
+                    }
+                } else {
+                    dialog.dismiss();   // Input is whitespace, close dialog
+                }
+            }
         });
 
         if(dialog.getWindow() != null) {
-            // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     public void createAddDialog(final Context context, final TodoAdapter adapter) {
-        createInputDialog(context, adapter, ADD);
+        createInputDialog(context);
 
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +112,7 @@ public class AlertHelper {
     }
 
     public void createEditDialog(final Context context, final TodoAdapter adapter, final int position) {
-        createInputDialog(context, adapter, EDIT);
+        createInputDialog(context);
 
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,26 +162,4 @@ public class AlertHelper {
         alert.show();
     }
 
-    private boolean checkForNewLine(CharSequence s, int start, int count, int intention) {
-        int end = start + count;
-
-        for(int i = start; i < end; i++) {
-            if (s.charAt(i) == '\n') {      // Enter key detected
-                String input = editText.getText().toString().trim();
-                if (!input.isEmpty()) {      // If string is empty, close dialog
-                    if(intention == ADD) {
-                        adapter.onItemAdd(new Todo(input));
-                    } else {
-                        todo.setTitle(input);
-                        adapter.onItemUpdate(todo);
-                    }
-                }
-
-                dialog.dismiss();
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
