@@ -87,9 +87,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onRestart() {
-        super.onRestart();
+        int start = adapter.getItemCount();
         adapter.getDatabaseItems();
-        adapter.notifyItemInserted(adapter.getItemCount());
+        adapter.notifyItemRangeInserted(start, adapter.getItemCount()-start);
+        super.onRestart();
     }
 
 }
