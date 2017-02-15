@@ -4,6 +4,7 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -31,8 +32,10 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
     @Override
     public void toggleSelected(int clickedPos) {
         if(selectedPos == clickedPos) {     // Deselect item
-            actionBar.startAnimation(fadeOutAnim);
-            fab.show();
+            if(clickedPos != -1) {
+                actionBar.startAnimation(fadeOutAnim);
+                fab.show();
+            }
 
             selectedPos = -1;
             notifyItemChanged(clickedPos);
