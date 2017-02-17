@@ -136,6 +136,7 @@ public class AlertHelper {
         todo = adapter.getTodoItem(position);
         word_count.setText(String.valueOf(WORD_LIMIT - todo.getTitle().length()));
         editText.setText(todo.getTitle());
+        editText.setSelection(editText.getText().length());
 
         dialog.show();
     }
