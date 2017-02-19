@@ -2,20 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/todo_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:layout_height="wrap_content" >
 
     <TextView
         android:id="@+id/todo_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|start"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="16dp"
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:text="@string/sample_text"
