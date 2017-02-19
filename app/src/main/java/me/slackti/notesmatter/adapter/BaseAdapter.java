@@ -57,7 +57,10 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
     public void onBindViewHolder(TodoHolder holder, int position) {
         Todo todo = todoList.get(position);
         holder.setTitle(todo.getTitle());
-        holder.textView.setBackgroundColor(selectedPos == position ? ContextCompat.getColor(context, R.color.colorItemSelected) : 0);
+
+        holder.textView.setBackground(selectedPos == position ?
+                ContextCompat.getDrawable(context, R.drawable.bg_select_state) :
+                ContextCompat.getDrawable(context, R.drawable.bg_normal_state));
     }
 
     @Override
