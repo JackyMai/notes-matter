@@ -161,8 +161,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             viewCleared = false;
         } else {
             if(viewHolder instanceof ItemTouchHelperViewHolder) {
-                ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
-                itemViewHolder.onDraw();
+                ((ItemTouchHelperViewHolder) viewHolder).onDraw();
             }
         }
     }
