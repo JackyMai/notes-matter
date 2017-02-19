@@ -1,12 +1,15 @@
 package me.slackti.notesmatter.model;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import me.slackti.notesmatter.R;
@@ -40,7 +43,7 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onDraw() {
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             itemView.setElevation(8);
             itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
         } else {
@@ -53,12 +56,10 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
 
     @Override
     public void onItemClear() {
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             itemView.setElevation(0);
-            itemView.setBackgroundColor(0);
-        } else {
-            itemView.setBackgroundColor(Color.WHITE);
         }
+        itemView.setBackgroundColor(0);
     }
 
     @Override
