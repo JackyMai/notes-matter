@@ -4,7 +4,7 @@ package me.slackti.notesmatter.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.Collections;
@@ -15,7 +15,7 @@ import me.slackti.notesmatter.touch.TouchListener;
 
 public class HistoryAdapter extends BaseAdapter {
 
-    public HistoryAdapter(Context context, TouchListener touchListener, RelativeLayout actionBar) {
+    public HistoryAdapter(Context context, TouchListener touchListener, LinearLayout actionBar) {
         super(context, touchListener, actionBar);
 
         getDatabaseItems();

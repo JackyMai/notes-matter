@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_action_bar"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/main_action_bar">
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
-        android:elevation="16dp">
+    android:layout_alignParentBottom="true"
+    android:background="@android:color/white"
+    android:elevation="16dp">
 
         <ImageButton
             android:layout_width="match_parent"
@@ -43,6 +39,4 @@
             android:layout_weight="1"
             style="?android:attr/buttonBarButtonStyle"/>
 
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.HistoryAdapter;
@@ -27,7 +27,7 @@ public class HistoryActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        final RelativeLayout actionBar = (RelativeLayout) findViewById(R.id.history_action_bar);
+        final LinearLayout actionBar = (LinearLayout) findViewById(R.id.history_action_bar);
         actionBar.setVisibility(GONE);
 
         adapter = new HistoryAdapter(this, this, actionBar);

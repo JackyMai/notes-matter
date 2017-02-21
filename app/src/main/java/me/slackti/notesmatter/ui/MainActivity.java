@@ -10,7 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final RelativeLayout actionBar = (RelativeLayout) findViewById(R.id.main_action_bar);
+        final LinearLayout actionBar = (LinearLayout) findViewById(R.id.main_action_bar);
         actionBar.setVisibility(GONE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

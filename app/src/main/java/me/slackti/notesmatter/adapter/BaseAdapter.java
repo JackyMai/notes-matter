@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -30,12 +30,12 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
     Animation fadeInAnim;
     Animation fadeOutAnim;
 
-    RelativeLayout actionBar;
+    LinearLayout actionBar;
     private LayoutInflater inflater;
 
     int selectedPos = -1;
 
-    BaseAdapter(Context context, TouchListener touchListener, RelativeLayout actionBar) {
+    BaseAdapter(Context context, TouchListener touchListener, LinearLayout actionBar) {
         this.context = context;
         this.touchListener = touchListener;
         this.actionBar = actionBar;
