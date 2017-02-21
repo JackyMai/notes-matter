@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -55,10 +56,20 @@ public class MainActivity extends BaseActivity {
         ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter, this));
 
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
         // RecyclerView
-        RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        final RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
+        recView.setLayoutManager(linearLayoutManager);
         recView.setAdapter(adapter);
+        recView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(adapter.getSelectedPos() == linearLayoutManager.findLastVisibleItemPosition()) {
+                    recView.smoothScrollToPosition(adapter.getSelectedPos());
+                }
+            }
+        });
 
         // ItemTouchHelper
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, (ItemTouchHelperAdapter) adapter);
