@@ -133,15 +133,24 @@ public class MainActivity extends BaseActivity {
     }
 
     private void checkEmptyState() {
+        // Animations are only played when it needs to to avoid peculiar visual bugs and delays
         if(adapter.getItemCount() == 0) {
-            recView.startAnimation(fadeOutAnim);
+            if(recView.getVisibility() != View.INVISIBLE) {
+                recView.startAnimation(fadeOutAnim);
+            }
             recView.setVisibility(View.INVISIBLE);
-            emptyState.startAnimation(fadeInAnim);
+
+            if(emptyState.getVisibility() != View.VISIBLE) {
+                emptyState.startAnimation(fadeInAnim);
+            }
             emptyState.setVisibility(View.VISIBLE);
         } else {
-            recView.startAnimation(fadeInAnim);
+            if(recView.getVisibility() != View.VISIBLE) {
+                recView.startAnimation(fadeInAnim);
+            }
             recView.setVisibility(View.VISIBLE);
-            emptyState.startAnimation(fadeOutAnim);
+
+            // Starting fade-in animation would cause emptyState to appear for a brief moment
             emptyState.setVisibility(View.INVISIBLE);
         }
     }
