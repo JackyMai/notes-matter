@@ -1,8 +1,6 @@
 package me.slackti.notesmatter.ui;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -36,9 +34,8 @@ public class HistoryActivity extends BaseActivity {
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
         undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter, this));
 
-        RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
-        recView.setLayoutManager(new LinearLayoutManager(this));
-        recView.setAdapter(adapter);
+        // RecyclerView
+        setupRecyclerView();
     }
 
     @Override

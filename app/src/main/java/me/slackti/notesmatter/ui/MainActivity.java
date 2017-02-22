@@ -3,7 +3,6 @@ package me.slackti.notesmatter.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -29,7 +28,6 @@ import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 import static android.view.View.GONE;
 
 public class MainActivity extends BaseActivity {
-    RecyclerView recView;
     RelativeLayout emptyState;
 
     Animation fadeInAnim;
@@ -40,6 +38,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,43 +61,23 @@ public class MainActivity extends BaseActivity {
         });
 
         actionModeCallback = new ActionModeCallback(this, adapter);
-
         fab.setOnClickListener(new FabListener(this, (TodoAdapter) adapter));
-
-        // ImageButton
-        ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
-        doneButton.setOnClickListener(new DoneButtonListener((TodoAdapter) adapter, this));
-
-        ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
-        editButton.setOnClickListener(new EditButtonListener(this, (TodoAdapter) adapter, this));
-
-        ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter, this));
-
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         emptyState = (RelativeLayout) findViewById(R.id.empty_state_main);
 
+        // ImageButton
+        setupActionBarButtons();
+
         // RecyclerView
-        recView = (RecyclerView) findViewById(R.id.todo_list);
-        recView.setLayoutManager(linearLayoutManager);
-        recView.setAdapter(adapter);
-        recView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if(adapter.getSelectedPos() == linearLayoutManager.findLastVisibleItemPosition()
-                        && adapter.getSelectedPos() != RecyclerView.NO_POSITION) {
-                    recView.smoothScrollToPosition(adapter.getSelectedPos());
-                }
-            }
-        });
+        setupRecyclerView();
 
         // ItemTouchHelper
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, (ItemTouchHelperAdapter) adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recView);
+        setupItemTouchHelper();
 
+        // Animations
         setupAnimation();
+
+        // Empty State
         checkEmptyState();
     }
 
@@ -129,6 +108,30 @@ public class MainActivity extends BaseActivity {
         super.onRestart();
     }
 
+    private void setupActionBarButtons() {
+        ImageButton doneButton = (ImageButton) findViewById(R.id.done_button);
+        doneButton.setOnClickListener(new DoneButtonListener((TodoAdapter) adapter, this));
+
+        ImageButton editButton = (ImageButton) findViewById(R.id.edit_button);
+        editButton.setOnClickListener(new EditButtonListener(this, (TodoAdapter) adapter, this));
+
+        ImageButton deleteButton = (ImageButton) findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new DeleteButtonListener(this, (TodoAdapter) adapter, this));
+    }
+
+    private void setupItemTouchHelper() {
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, (ItemTouchHelperAdapter) adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recView);
+    }
+
+    private void setupAnimation() {
+        fadeInAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        fadeInAnim.setDuration(225);
+        fadeOutAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        fadeOutAnim.setDuration(195);
+    }
+
     private void checkEmptyState() {
         if(adapter.getItemCount() == 0) {
             recView.startAnimation(fadeOutAnim);
@@ -141,12 +144,5 @@ public class MainActivity extends BaseActivity {
             emptyState.startAnimation(fadeOutAnim);
             emptyState.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private void setupAnimation() {
-        fadeInAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        fadeInAnim.setDuration(225);
-        fadeOutAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-        fadeOutAnim.setDuration(195);
     }
 }
