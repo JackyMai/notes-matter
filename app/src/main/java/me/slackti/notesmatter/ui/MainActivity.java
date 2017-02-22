@@ -10,8 +10,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -26,6 +29,11 @@ import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
 import static android.view.View.GONE;
 
 public class MainActivity extends BaseActivity {
+    RecyclerView recView;
+    RelativeLayout emptyState;
+
+    Animation fadeInAnim;
+    Animation fadeOutAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,17 @@ public class MainActivity extends BaseActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         adapter = new TodoAdapter(this, this, actionBar, fab);
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                checkEmptyState();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                checkEmptyState();
+            }
+        });
 
         actionModeCallback = new ActionModeCallback(this, adapter);
 
@@ -58,14 +77,17 @@ public class MainActivity extends BaseActivity {
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
+        emptyState = (RelativeLayout) findViewById(R.id.empty_state_main);
+
         // RecyclerView
-        final RecyclerView recView = (RecyclerView) findViewById(R.id.todo_list);
+        recView = (RecyclerView) findViewById(R.id.todo_list);
         recView.setLayoutManager(linearLayoutManager);
         recView.setAdapter(adapter);
         recView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if(adapter.getSelectedPos() == linearLayoutManager.findLastVisibleItemPosition()) {
+                if(adapter.getSelectedPos() == linearLayoutManager.findLastVisibleItemPosition()
+                        && adapter.getSelectedPos() != RecyclerView.NO_POSITION) {
                     recView.smoothScrollToPosition(adapter.getSelectedPos());
                 }
             }
@@ -75,6 +97,9 @@ public class MainActivity extends BaseActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this, (ItemTouchHelperAdapter) adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recView);
+
+        setupAnimation();
+        checkEmptyState();
     }
 
     @Override
@@ -104,4 +129,24 @@ public class MainActivity extends BaseActivity {
         super.onRestart();
     }
 
+    private void checkEmptyState() {
+        if(adapter.getItemCount() == 0) {
+            recView.startAnimation(fadeOutAnim);
+            recView.setVisibility(View.INVISIBLE);
+            emptyState.startAnimation(fadeInAnim);
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            recView.startAnimation(fadeInAnim);
+            recView.setVisibility(View.VISIBLE);
+            emptyState.startAnimation(fadeOutAnim);
+            emptyState.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setupAnimation() {
+        fadeInAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        fadeInAnim.setDuration(225);
+        fadeOutAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        fadeOutAnim.setDuration(195);
+    }
 }
