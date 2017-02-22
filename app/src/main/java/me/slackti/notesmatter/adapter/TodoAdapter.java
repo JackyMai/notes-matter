@@ -31,10 +31,8 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
     @Override
     public void toggleSelected(int clickedPos) {
         if(selectedPos == clickedPos) {     // Deselect item
-            if(clickedPos != -1) {
-                actionBar.startAnimation(fadeOutAnim);
-                fab.show();
-            }
+            actionBar.startAnimation(fadeOutAnim);
+            fab.show();
 
             selectedPos = -1;
             notifyItemChanged(clickedPos);
