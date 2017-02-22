@@ -11,6 +11,9 @@
     <string name="delete_button">Delete</string>
     <string name="history_button">Completed todos</string>
     <string name="undo_button">Undo</string>
-    <string name="empty_state_title">List is empty!</string>
-    <string name="empty_state_desc">Take a break, or add a new task</string>
+    <string name="empty_state_main_title">List is empty!</string>
+    <string name="empty_state_main_desc">Take a break, or add a new task</string>
+    <string name="empty_state_history_title">No completed tasks!</string>
+    <string name="empty_state_history_desc">Keep calm and start adding some</string>
+
 </resources>

@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context="me.slackti.notesmatter.ui.HistoryActivity">
 
+    <include layout="@layout/empty_state_history"
+        android:visibility="invisible" />
+
     <include layout="@layout/content_main"
         android:layout_above="@+id/history_action_bar"
         android:layout_height="match_parent"
