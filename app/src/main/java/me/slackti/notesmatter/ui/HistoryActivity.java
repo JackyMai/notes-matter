@@ -1,9 +1,12 @@
 package me.slackti.notesmatter.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.HistoryAdapter;
@@ -29,13 +32,35 @@ public class HistoryActivity extends BaseActivity {
         actionBar.setVisibility(GONE);
 
         adapter = new HistoryAdapter(this, this, actionBar);
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                checkEmptyState();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                checkEmptyState();
+            }
+        });
+
         actionModeCallback = new ActionModeCallback(this, adapter);
+
+        // emptyState is set to visible to prevent the fade-in animation from starting
+        emptyState = (RelativeLayout) findViewById(R.id.empty_state_history);
+        emptyState.setVisibility(View.VISIBLE);
 
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
         undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter, this));
 
         // RecyclerView
         setupRecyclerView();
+
+        // Animations
+        setupAnimation();
+
+        // Empty State
+        checkEmptyState();
     }
 
     @Override
@@ -49,5 +74,4 @@ public class HistoryActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

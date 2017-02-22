@@ -6,6 +6,9 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.BaseAdapter;
@@ -13,10 +16,14 @@ import me.slackti.notesmatter.callback.ActionModeCallback;
 import me.slackti.notesmatter.touch.TouchListener;
 
 public class BaseActivity extends AppCompatActivity implements TouchListener {
+    RelativeLayout emptyState;
     RecyclerView recView;
     BaseAdapter adapter;
     ActionMode actionMode;
     ActionModeCallback actionModeCallback;
+
+    Animation fadeInAnim;
+    Animation fadeOutAnim;
 
     @Override
     public void onItemClicked(int position) {
@@ -60,5 +67,35 @@ public class BaseActivity extends AppCompatActivity implements TouchListener {
                 }
             }
         });
+    }
+
+    void setupAnimation() {
+        fadeInAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        fadeInAnim.setDuration(225);
+        fadeOutAnim = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        fadeOutAnim.setDuration(195);
+    }
+
+    void checkEmptyState() {
+        // Animations are only played when it needs to to avoid peculiar visual bugs and delays
+        if(adapter.getItemCount() == 0) {
+            if(recView.getVisibility() != View.INVISIBLE) {
+                recView.startAnimation(fadeOutAnim);
+            }
+            recView.setVisibility(View.INVISIBLE);
+
+            if(emptyState.getVisibility() != View.VISIBLE) {
+                emptyState.startAnimation(fadeInAnim);
+            }
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            if(recView.getVisibility() != View.VISIBLE) {
+                recView.startAnimation(fadeInAnim);
+            }
+            recView.setVisibility(View.VISIBLE);
+
+            // Starting fade-in animation would cause emptyState to appear for a brief moment
+            emptyState.setVisibility(View.INVISIBLE);
+        }
     }
 }
