@@ -2,10 +2,8 @@ package me.slackti.notesmatter.adapter;
 
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,42 +45,29 @@ public class HistoryAdapter extends BaseAdapter {
 
     @Override
     public void getDatabaseItems() {
-        Cursor listData = databaseHelper.getCompletedItems();
+        firebaseHelper.retrieveInactiveData(todoList);
 
-        if(listData.getCount() > 0) {
-            while(listData.moveToNext()) {
-                Todo todo = new Todo(listData.getString(0),
-                        listData.getString(1),
-                        listData.getInt(2));
-
-                todoList.add(todo);
+        // So that newly completed items would be on top
+        Collections.sort(todoList, new Comparator<Todo>() {
+            @Override
+            public int compare(Todo todo1, Todo todo2) {
+                return Integer.parseInt(todo2.getKey())-Integer.parseInt(todo1.getKey());
             }
-
-            // So that newly completed items would be on top
-            Collections.sort(todoList, new Comparator<Todo>() {
-                @Override
-                public int compare(Todo todo1, Todo todo2) {
-                    return Integer.parseInt(todo2.getId())-Integer.parseInt(todo1.getId());
-                }
-            });
-        }
+        });
     }
 
     public void onItemUndone(int position) {
         Todo todo = todoList.get(position);
+        firebaseHelper.moveInactiveData(todo);
 
-        if(databaseHelper.onItemUndone(todo)) {
-            todoList.remove(position);
-            this.notifyItemRemoved(position);
+        todoList.remove(position);
+        this.notifyItemRemoved(position);
 
-            clearSelection();
+        clearSelection();
 
-            // To prevent operation from going out of bound when removing last item
-            if(position < todoList.size()) {
-                updateItemPositions(position, todoList.size()-1);
-            }
-        } else {
-            Toast.makeText(context, "Failed to undone item", Toast.LENGTH_LONG).show();
+        // To prevent operation from going out of bound when removing last item
+        if(position < todoList.size()) {
+            updateItemPositions(position, todoList.size()-1);
         }
     }
 
@@ -98,8 +83,6 @@ public class HistoryAdapter extends BaseAdapter {
             end = fromPosition;
         }
 
-        if(!databaseHelper.updateInactiveItemPositions(todoList, start, end)) {
-            Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
-        }
+        firebaseHelper.updateInactiveItemPositions(todoList, start, end);
     }
 }

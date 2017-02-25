@@ -14,18 +14,18 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.database.DatabaseHelper;
+import me.slackti.notesmatter.database.FirebaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
 import me.slackti.notesmatter.touch.TouchListener;
 
 public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
-    Context context;
+    private Context context;
     private TouchListener touchListener;
 
     ArrayList<Todo> todoList;
-    DatabaseHelper databaseHelper;
+    FirebaseHelper firebaseHelper;
 
     Animation fadeInAnim;
     Animation fadeOutAnim;
@@ -42,7 +42,8 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
         inflater = LayoutInflater.from(context);
         todoList = new ArrayList<>();
-        databaseHelper = new DatabaseHelper(context);
+
+        firebaseHelper = FirebaseHelper.getInstance();
 
         setAnimation();
     }
