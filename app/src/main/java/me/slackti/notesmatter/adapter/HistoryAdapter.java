@@ -5,9 +5,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import java.util.Collections;
-import java.util.Comparator;
-
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.touch.TouchListener;
 
@@ -46,14 +43,6 @@ public class HistoryAdapter extends BaseAdapter {
     @Override
     public void getDatabaseItems() {
         firebaseHelper.retrieveInactiveData(todoList, this);
-
-        // So that newly completed items would be on top
-        Collections.sort(todoList, new Comparator<Todo>() {
-            @Override
-            public int compare(Todo todo1, Todo todo2) {
-                return Integer.parseInt(todo2.getKey())-Integer.parseInt(todo1.getKey());
-            }
-        });
     }
 
     public void onItemUndone(int position) {

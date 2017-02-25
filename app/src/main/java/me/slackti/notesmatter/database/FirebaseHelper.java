@@ -1,7 +1,6 @@
 package me.slackti.notesmatter.database;
 
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +13,7 @@ import java.util.Comparator;
 
 import me.slackti.notesmatter.adapter.HistoryAdapter;
 import me.slackti.notesmatter.adapter.TodoAdapter;
+import me.slackti.notesmatter.listener.BasicChildEventListener;
 import me.slackti.notesmatter.model.Todo;
 
 public class FirebaseHelper {
@@ -32,7 +32,9 @@ public class FirebaseHelper {
     private static final String DEADLINE = "deadline";
     private static final String POSITION = "position";
 
-    private FirebaseHelper() {}
+    private FirebaseHelper() {
+        // Constructor made private to prevent it from being instantiated
+    }
 
     public static FirebaseHelper getInstance() {
         if(firebaseHelper == null) {
@@ -44,22 +46,20 @@ public class FirebaseHelper {
         return firebaseHelper;
     }
 
-    public String addActiveData(Todo todo) {
-        return addData(todo, activeRef);
+    public void addActiveData(Todo todo) {
+        addData(todo, activeRef);
     }
 
-    public String addInactiveData(Todo todo) {
-        return addData(todo, inactiveRef);
+    public void addInactiveData(Todo todo) {
+        addData(todo, inactiveRef);
     }
 
-    private String addData(Todo todo, DatabaseReference ref) {
-        DatabaseReference pushRef = ref.push();
-        pushRef.setValue(todo);
-        return pushRef.getKey();
+    private void addData(Todo todo, DatabaseReference ref) {
+        ref.push().setValue(todo);
     }
 
     public void setActiveDataListener(final ArrayList<Todo> todoList, final TodoAdapter adapter) {
-        activeRef.addChildEventListener(new ChildEventListener() {
+        activeRef.addChildEventListener(new BasicChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Todo todo = dataSnapshot.getValue(Todo.class);
@@ -71,49 +71,34 @@ public class FirebaseHelper {
                 }
 
                 todoList.add(todo);
-
-                adapter.notifyItemInserted(todoList.size()-1);
+                adapter.notifyItemInserted(todoList.indexOf(todo));
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // Sort arraylist according to item's position
-                Collections.sort(todoList, new Comparator<Todo>() {
-                    @Override
-                    public int compare(Todo todo1, Todo todo2) {
-                        return todo1.getPosition()-todo2.getPosition();
-                    }
-                });
-
-                adapter.notifyDataSetChanged();
+                sortListByPosition(todoList, adapter);
             }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
         });
         activeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Sort arraylist according to item's position
-                Collections.sort(todoList, new Comparator<Todo>() {
-                    @Override
-                    public int compare(Todo todo1, Todo todo2) {
-                        return todo1.getPosition()-todo2.getPosition();
-                    }
-                });
-
-                adapter.notifyDataSetChanged();
+                sortListByPosition(todoList, adapter);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    private void sortListByPosition(final ArrayList<Todo> todoList, final TodoAdapter adapter) {
+        // Sort arraylist according to item's position
+        Collections.sort(todoList, new Comparator<Todo>() {
+            @Override
+            public int compare(Todo todo1, Todo todo2) {
+                return todo1.getPosition()-todo2.getPosition();
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
     public void retrieveInactiveData(final ArrayList<Todo> todoList, final HistoryAdapter adapter) {
@@ -130,9 +115,17 @@ public class FirebaseHelper {
                     }
 
                     todoList.add(todo);
-
                     adapter.notifyItemInserted(todoList.size()-1);
                 }
+
+                // So that newly completed items would be on top
+                Collections.sort(todoList, new Comparator<Todo>() {
+                    @Override
+                    public int compare(Todo todo1, Todo todo2) {
+                        return todo2.getKey().compareTo(todo1.getKey());
+                    }
+                });
+                adapter.notifyDataSetChanged();
             }
 
             @Override
