@@ -31,11 +31,11 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
         if(selectedPos == clickedPos) {
             if(clickedPos != -1) {  // -1 is reserved for programmatic operations
                 actionBar.startAnimation(fadeOutAnim);
+                notifyItemChanged(clickedPos);
             }
 
             fab.show();
             selectedPos = -1;
-            notifyItemChanged(clickedPos);
         } else {    // User is selecting an item
             if(selectedPos == -1) {     // Nothing is highlighted at the moment
                 fab.hide();
@@ -58,12 +58,7 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
     @Override
     public void onItemAdd(Todo todo) {
         todo.setPosition(todoList.size());
-
-        String key = firebaseHelper.addActiveData(todo);
-
-        todo.setKey(key);
-        todoList.add(todo);
-        this.notifyItemInserted(todoList.indexOf(todo));
+        firebaseHelper.addActiveData(todo);
     }
 
     @Override
