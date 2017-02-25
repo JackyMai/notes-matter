@@ -17,9 +17,7 @@ public class UndoneButtonListener extends BaseListener {
 
     @Override
     public void onClick(View v) {
-        Todo todo = adapter.getSelectedItem();
-        adapter.onItemUndone(todo.getPosition());
-
+        adapter.onItemUndone(adapter.getSelectedPos());
         super.onClick(v);
     }
 }
