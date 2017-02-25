@@ -27,7 +27,7 @@ import static android.view.View.GONE;
 public class MainActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -91,14 +91,6 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onRestart() {
-        int start = adapter.getItemCount();
-        adapter.getDatabaseItems();
-        adapter.notifyItemRangeInserted(start, adapter.getItemCount()-start);
-        super.onRestart();
     }
 
     private void setupActionBarButtons() {
