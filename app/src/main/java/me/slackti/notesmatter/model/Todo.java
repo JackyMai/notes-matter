@@ -1,30 +1,35 @@
 package me.slackti.notesmatter.model;
 
 
+import com.google.firebase.database.Exclude;
+
 public class Todo {
 
-    private String id;
+    private String key;
     private String title;
     private int position;
 
-    public Todo() {}
+    public Todo() {
+        // Default constructor required for calls to DataSnapshot.getValue(Todo.class)
+    }
 
     public Todo(String title) {
         this.title = title;
     }
 
-    public Todo(String id, String title, int position) {
-        this.id = id;
+    public Todo(String key, String title, int position) {
+        this.key = key;
         this.title = title;
         this.position = position;
     }
 
-    public String getId() {
-        return id;
+    @Exclude
+    public String getKey() {
+        return key;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTitle() {
