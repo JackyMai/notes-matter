@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import me.slackti.notesmatter.adapter.HistoryAdapter;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.model.Todo;
 
@@ -115,7 +116,7 @@ public class FirebaseHelper {
         });
     }
 
-    public void retrieveInactiveData(final ArrayList<Todo> todoList) {
+    public void retrieveInactiveData(final ArrayList<Todo> todoList, final HistoryAdapter adapter) {
         inactiveRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,6 +130,8 @@ public class FirebaseHelper {
                     }
 
                     todoList.add(todo);
+
+                    adapter.notifyItemInserted(todoList.size()-1);
                 }
             }
 

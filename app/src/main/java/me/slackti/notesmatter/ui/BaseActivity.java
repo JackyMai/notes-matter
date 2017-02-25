@@ -1,8 +1,6 @@
 package me.slackti.notesmatter.ui;
 
 
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +9,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
-
-import com.google.firebase.database.FirebaseDatabase;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.BaseAdapter;

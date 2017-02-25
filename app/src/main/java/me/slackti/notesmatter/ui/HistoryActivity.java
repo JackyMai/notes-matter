@@ -32,22 +32,23 @@ public class HistoryActivity extends BaseActivity {
         actionBar.setVisibility(GONE);
 
         adapter = new HistoryAdapter(this, this, actionBar);
-//        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-//            @Override
-//            public void onItemRangeInserted(int positionStart, int itemCount) {
-//                checkEmptyState();
-//            }
-//
-//            @Override
-//            public void onItemRangeRemoved(int positionStart, int itemCount) {
-//                checkEmptyState();
-//            }
-//        });
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                checkEmptyState();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                checkEmptyState();
+            }
+        });
 
         actionModeCallback = new ActionModeCallback(this, adapter);
 
         // emptyState is set to visible to prevent the fade-in animation from starting
         emptyState = (RelativeLayout) findViewById(R.id.empty_state_history);
+        emptyState.setVisibility(View.VISIBLE);
 
         ImageButton undoneButton = (ImageButton) findViewById(R.id.undone_button);
         undoneButton.setOnClickListener(new UndoneButtonListener((HistoryAdapter) adapter, this));
@@ -57,9 +58,6 @@ public class HistoryActivity extends BaseActivity {
 
         // Animations
         setupAnimation();
-
-        // Empty State
-//        checkEmptyState();
     }
 
     @Override

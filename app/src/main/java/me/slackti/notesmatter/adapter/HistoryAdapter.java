@@ -45,7 +45,7 @@ public class HistoryAdapter extends BaseAdapter {
 
     @Override
     public void getDatabaseItems() {
-        firebaseHelper.retrieveInactiveData(todoList);
+        firebaseHelper.retrieveInactiveData(todoList, this);
 
         // So that newly completed items would be on top
         Collections.sort(todoList, new Comparator<Todo>() {

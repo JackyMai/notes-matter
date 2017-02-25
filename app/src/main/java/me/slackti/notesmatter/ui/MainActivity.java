@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,7 +57,9 @@ public class MainActivity extends BaseActivity {
         actionModeCallback = new ActionModeCallback(this, adapter);
         fab.setOnClickListener(new FabListener(this, (TodoAdapter) adapter));
 
+        // Empty State
         emptyState = (RelativeLayout) findViewById(R.id.empty_state_main);
+        emptyState.setVisibility(View.VISIBLE);
 
         // ImageButton
         setupActionBarButtons();
@@ -69,9 +72,6 @@ public class MainActivity extends BaseActivity {
 
         // Animations
         setupAnimation();
-
-        // Empty State
-        checkEmptyState();
     }
 
     @Override
