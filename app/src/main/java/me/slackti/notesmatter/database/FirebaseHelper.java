@@ -1,6 +1,8 @@
 package me.slackti.notesmatter.database;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,9 +23,8 @@ public class FirebaseHelper {
     private static FirebaseHelper firebaseHelper;
     private static FirebaseDatabase database;
 
-    private DatabaseReference rootRef = database.getReference();
-    private DatabaseReference activeRef = rootRef.child(ACTIVE);
-    private DatabaseReference inactiveRef = rootRef.child(INACTIVE);
+    private DatabaseReference activeRef;
+    private DatabaseReference inactiveRef;
 
     private static final String ACTIVE = "active";
     private static final String INACTIVE = "inactive";
@@ -33,7 +34,14 @@ public class FirebaseHelper {
     private static final String POSITION = "position";
 
     private FirebaseHelper() {
-        // Constructor made private to prevent it from being instantiated
+        // Constructor made private to prevent it from being instantiated from outside
+        DatabaseReference rootRef = database.getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null) {
+            activeRef = rootRef.child(ACTIVE).child(user.getUid());
+            inactiveRef = rootRef.child(INACTIVE).child(user.getUid());
+        }
     }
 
     public static FirebaseHelper getInstance() {
@@ -48,10 +56,6 @@ public class FirebaseHelper {
 
     public void addActiveData(Todo todo) {
         addData(todo, activeRef);
-    }
-
-    public void addInactiveData(Todo todo) {
-        addData(todo, inactiveRef);
     }
 
     private void addData(Todo todo, DatabaseReference ref) {
