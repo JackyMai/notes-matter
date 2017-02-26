@@ -39,9 +39,11 @@ public class SignInActivity extends Activity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setIsSmartLockEnabled(false)
-                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                            .setTheme(R.style.AppTheme)
+                            .setLogo(R.drawable.ic_done_white)
+                            .setTheme(R.style.SignInTheme)
                             .build(),
                     RC_SIGN_IN);
         }
