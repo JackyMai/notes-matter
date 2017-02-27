@@ -1,8 +1,8 @@
 package me.slackti.notesmatter.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 import me.slackti.notesmatter.R;
 
-public class SignInActivity extends Activity {
+public class SignInActivity extends AppCompatActivity {
 
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private  FirebaseUser user;
