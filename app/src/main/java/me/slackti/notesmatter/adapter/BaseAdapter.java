@@ -59,7 +59,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         Todo todo = todoList.get(position);
         holder.setTitle(todo.getTitle());
 
-        holder.textView.setBackground(selectedPos == position ?
+        holder.itemView.setBackground(selectedPos == position ?
                 ContextCompat.getDrawable(context, R.drawable.bg_select_state) :
                 ContextCompat.getDrawable(context, R.drawable.bg_normal_state));
     }
