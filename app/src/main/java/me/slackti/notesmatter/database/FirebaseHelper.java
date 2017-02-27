@@ -78,10 +78,10 @@ public class FirebaseHelper {
                 adapter.notifyItemInserted(todoList.indexOf(todo));
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                sortListByPosition(todoList, adapter);
-            }
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                sortListByPosition(todoList, adapter);
+//            }
         });
         activeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
