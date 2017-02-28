@@ -2,6 +2,7 @@ package me.slackti.notesmatter.helper;
 
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -14,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -32,6 +36,7 @@ public class AlertHelper {
     private Todo todo;
 
     private TextView word_count;
+    private ImageButton date_button;
     private ImageButton add_button;
 
     private void createInputDialog(final Context context) {
@@ -44,6 +49,30 @@ public class AlertHelper {
 
         word_count = (TextView) dialog_view.findViewById(R.id.word_count);
         final int defaultColor = word_count.getCurrentTextColor();
+
+        date_button = (ImageButton) dialog_view.findViewById(R.id.dialog_date_button);
+
+        final Calendar calendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            }
+        };
+
+        date_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(context,
+                        date,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
         add_button = (ImageButton) dialog_view.findViewById(R.id.dialog_add_button);
         editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
@@ -91,6 +120,12 @@ public class AlertHelper {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
 
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+            }
+        });
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
