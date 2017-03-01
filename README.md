@@ -2,15 +2,19 @@
 A simple todo app created for the Android platform.
 
 ## Todo
+- Add the ability to create separate lists
+- Add the ability to add notes to existing items
+- ~~Add the ability to authenticate users~~
+- ~~Add the ability to sync with remote database in real time~~
 - ~~Refactor adapters~~
 - ~~Implement selection mode properly (sort of)~~ 
 - ~~Limit task description to a certain length of character~~
 - Rebuild using external library for better performance
-- Add the ability to set deadline for tasks
-- Implement dynamic layout to allow for:
-  * Tasks with or without deadline
+- ~~Add the ability to set deadline for tasks~~
+- ~~Implement dynamic layout to allow for:~~
+  * ~~Tasks with or without deadline~~
   * ~~Tasks that span for more than a single line~~
-- Better support for pre-v21 (Kitkat) devices
+- ~~Better support for pre-v21 (Kitkat) devices~~
 - Better logo...?
 
 ## Usage

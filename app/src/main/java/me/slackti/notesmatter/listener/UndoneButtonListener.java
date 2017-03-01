@@ -4,7 +4,6 @@ package me.slackti.notesmatter.listener;
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.HistoryAdapter;
-import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.touch.TouchListener;
 
 public class UndoneButtonListener extends BaseListener {
@@ -17,9 +16,7 @@ public class UndoneButtonListener extends BaseListener {
 
     @Override
     public void onClick(View v) {
-        Todo todo = adapter.getSelectedItem();
-        adapter.onItemUndone(todo.getPosition());
-
+        adapter.onItemUndone(adapter.getSelectedPos());
         super.onClick(v);
     }
 }

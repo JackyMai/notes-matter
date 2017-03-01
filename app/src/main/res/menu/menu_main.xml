@@ -9,4 +9,8 @@
         android:title="@string/history_button"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/sign_out_button"
+        android:title="@string/sign_out_button"
+        app:showAsAction="never" />
 </menu>

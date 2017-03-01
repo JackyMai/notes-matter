@@ -89,11 +89,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 todo.setPosition(i);
 
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(COL0, todo.getId());
+                contentValues.put(COL0, todo.getKey());
                 contentValues.put(COL1, todo.getTitle());
                 contentValues.put(COL2, i);
 
-                long result = db.update(TABLE_NAME, contentValues, COL0 + " = ?", new String[] {todo.getId()});
+                long result = db.update(TABLE_NAME, contentValues, COL0 + " = ?", new String[] {todo.getKey()});
                 if(result == 0) {
                     return false;
                 }
@@ -123,11 +123,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL0, todo.getId());
+        contentValues.put(COL0, todo.getKey());
         contentValues.put(COL1, todo.getTitle());
         contentValues.put(COL2, todo.getPosition());
 
-        long result = db.update(TABLE_ACTIVE, contentValues, COL0 + " = ?", new String[] {todo.getId()});
+        long result = db.update(TABLE_ACTIVE, contentValues, COL0 + " = ?", new String[] {todo.getKey()});
 
         return result != 0;
     }
@@ -140,7 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private boolean deleteData(Todo todo, String TABLE_NAME) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        long result = db.delete(TABLE_NAME, COL0 + " = ?", new String[] {todo.getId()});
+        long result = db.delete(TABLE_NAME, COL0 + " = ?", new String[] {todo.getKey()});
 
         return result != 0;
     }

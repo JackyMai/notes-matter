@@ -18,7 +18,7 @@ import static android.view.View.GONE;
 public class HistoryActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
@@ -58,9 +58,6 @@ public class HistoryActivity extends BaseActivity {
 
         // Animations
         setupAnimation();
-
-        // Empty State
-        checkEmptyState();
     }
 
     @Override

@@ -2,17 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/todo_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:padding="16dp" >
 
     <TextView
         android:id="@+id/todo_title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|start"
-        android:padding="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:text="@string/sample_text"
         android:ellipsize="end"/>
+
+    <TextView
+        android:id="@+id/todo_deadline"
+        android:text="@string/todo_deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo_title"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -2,15 +2,21 @@ package me.slackti.notesmatter.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
@@ -27,7 +33,7 @@ import static android.view.View.GONE;
 public class MainActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -56,7 +62,9 @@ public class MainActivity extends BaseActivity {
         actionModeCallback = new ActionModeCallback(this, adapter);
         fab.setOnClickListener(new FabListener(this, (TodoAdapter) adapter));
 
+        // Empty State
         emptyState = (RelativeLayout) findViewById(R.id.empty_state_main);
+        emptyState.setVisibility(View.VISIBLE);
 
         // ImageButton
         setupActionBarButtons();
@@ -69,9 +77,6 @@ public class MainActivity extends BaseActivity {
 
         // Animations
         setupAnimation();
-
-        // Empty State
-        checkEmptyState();
     }
 
     @Override
@@ -88,17 +93,20 @@ public class MainActivity extends BaseActivity {
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.sign_out_button) {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // User is now signed out
+                            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                            finish();
+                        }
+                    });
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onRestart() {
-        int start = adapter.getItemCount();
-        adapter.getDatabaseItems();
-        adapter.notifyItemRangeInserted(start, adapter.getItemCount()-start);
-        super.onRestart();
     }
 
     private void setupActionBarButtons() {

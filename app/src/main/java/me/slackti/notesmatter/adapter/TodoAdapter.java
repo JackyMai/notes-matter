@@ -2,14 +2,11 @@ package me.slackti.notesmatter.adapter;
 
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.Collections;
-import java.util.Comparator;
 
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
@@ -34,11 +31,11 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
         if(selectedPos == clickedPos) {
             if(clickedPos != -1) {  // -1 is reserved for programmatic operations
                 actionBar.startAnimation(fadeOutAnim);
+                notifyItemChanged(clickedPos);
             }
 
             fab.show();
             selectedPos = -1;
-            notifyItemChanged(clickedPos);
         } else {    // User is selecting an item
             if(selectedPos == -1) {     // Nothing is highlighted at the moment
                 fab.hide();
@@ -55,58 +52,20 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
 
     @Override
     public void getDatabaseItems() {
-        todoList.clear();
-
-        Cursor listData = databaseHelper.getIncompleteItems();
-
-        if(listData.getCount() > 0) {
-            while(listData.moveToNext()) {
-                Todo todo = new Todo(listData.getString(0),
-                        listData.getString(1),
-                        listData.getInt(2));
-
-                if(todo.getPosition() == -1) {
-                    todo.setPosition(todoList.size());
-                }
-
-                todoList.add(todo);
-            }
-
-            // Sort arraylist according to item's position
-            Collections.sort(todoList, new Comparator<Todo>() {
-                @Override
-                public int compare(Todo todo1, Todo todo2) {
-                    return todo1.getPosition()-todo2.getPosition();
-                }
-            });
-        }
+        firebaseHelper.setActiveDataListener(todoList, this);
     }
 
     @Override
     public void onItemAdd(Todo todo) {
         todo.setPosition(todoList.size());
-
-        long id = databaseHelper.addData(todo);
-
-        if(id != -1) {
-            todo.setId(Long.toString(id));
-            todoList.add(todo);
-
-            this.notifyItemInserted(todoList.indexOf(todo));
-        } else {
-            Toast.makeText(context, "404 something went wrong", Toast.LENGTH_LONG).show();
-        }
+        firebaseHelper.addActiveData(todo);
     }
 
     @Override
     public void onItemUpdate(Todo todo) {
-        if(databaseHelper.updateData(todo)) {
-            this.notifyItemChanged(todo.getPosition());
-
-            clearSelection();
-        } else {
-            Toast.makeText(context, "Failed to edit todo!", Toast.LENGTH_SHORT).show();
-        }
+        firebaseHelper.updateData(todo);
+        this.notifyItemChanged(todo.getPosition());
+        clearSelection();
     }
 
     @Override
@@ -133,38 +92,32 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
     @Override
     public void onItemDone(int position) {
         Todo todo = todoList.get(position);
+        firebaseHelper.moveActiveData(todo);
 
-        if(databaseHelper.onItemDone(todo)) {
-            todoList.remove(position);
-            this.notifyItemRemoved(position);
+        todoList.remove(position);
+        this.notifyItemRemoved(position);
 
-            clearSelection();
+        clearSelection();
 
-            // To prevent operation from going out of bound when removing last item
-            if(position < todoList.size()) {
-                updateItemPositions(position, todoList.size()-1);
-            }
-        } else {
-            Toast.makeText(context, "Failed to archive item", Toast.LENGTH_LONG).show();
+        // To prevent operation from going out of bound when removing last item
+        if(position < todoList.size()) {
+            updateItemPositions(position, todoList.size()-1);
         }
     }
 
     @Override
     public void onItemDismiss(int position) {
         Todo todo = todoList.get(position);
+        firebaseHelper.removeData(todo);
 
-        if(databaseHelper.deleteData(todo)) {
-            todoList.remove(position);
-            this.notifyItemRemoved(position);
+        todoList.remove(position);
+        this.notifyItemRemoved(position);
 
-            clearSelection();
+        clearSelection();
 
-            // To prevent operation from going out of bound when removing last item
-            if(position < todoList.size()) {
-                updateItemPositions(position, todoList.size()-1);
-            }
-        } else {
-            Toast.makeText(context, "Failed to remove item", Toast.LENGTH_LONG).show();
+        // To prevent operation from going out of bound when removing last item
+        if(position < todoList.size()) {
+            updateItemPositions(position, todoList.size()-1);
         }
     }
 
@@ -180,8 +133,6 @@ public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {
             end = fromPosition;
         }
 
-        if(!databaseHelper.updateActiveItemPositions(todoList, start, end)) {
-            Toast.makeText(context, "Failed to update positions", Toast.LENGTH_LONG).show();
-        }
+        firebaseHelper.updateActiveItemPositions(todoList, start, end);
     }
 }

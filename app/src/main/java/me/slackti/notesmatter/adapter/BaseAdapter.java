@@ -11,21 +11,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.database.DatabaseHelper;
+import me.slackti.notesmatter.database.FirebaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
 import me.slackti.notesmatter.touch.TouchListener;
 
 public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
-    Context context;
+    private Context context;
     private TouchListener touchListener;
 
     ArrayList<Todo> todoList;
-    DatabaseHelper databaseHelper;
+    FirebaseHelper firebaseHelper;
 
     Animation fadeInAnim;
     Animation fadeOutAnim;
@@ -42,7 +46,8 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 
         inflater = LayoutInflater.from(context);
         todoList = new ArrayList<>();
-        databaseHelper = new DatabaseHelper(context);
+
+        firebaseHelper = FirebaseHelper.getInstance();
 
         setAnimation();
     }
@@ -58,9 +63,40 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         Todo todo = todoList.get(position);
         holder.setTitle(todo.getTitle());
 
-        holder.textView.setBackground(selectedPos == position ?
+        if(todo.getDeadline() != null) {
+            holder.setDeadline(formatDeadline(todo.getDeadline()));
+            holder.deadline.setVisibility(View.VISIBLE);
+        } else {
+            holder.deadline.setVisibility(View.GONE);
+        }
+
+        holder.itemView.setBackground(selectedPos == position ?
                 ContextCompat.getDrawable(context, R.drawable.bg_select_state) :
                 ContextCompat.getDrawable(context, R.drawable.bg_normal_state));
+    }
+
+    private String formatDeadline(String deadline) {
+        // Split deadline into parts and adding 1 to the month
+        // because Calendar.MONTH starts from index 0 (i.e. 0 = January)
+        String[] parts = deadline.split("/");
+        parts[1] = String.valueOf(Integer.parseInt(parts[1]) + 1);
+
+        // Set up the pattern for input and output for parsing and formatting
+        SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        SimpleDateFormat output = new SimpleDateFormat("d MMM", Locale.ENGLISH);
+
+        // Only format year as well if the year for deadline is not this year
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        if(Integer.parseInt(parts[2]) != currentYear) {
+            output.applyPattern("d MMM yy");
+        }
+
+        try {
+            return output.format(input.parse(parts[0] + "/" + parts[1] + "/" + parts[2]));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
