@@ -16,5 +16,6 @@
     <string name="empty_state_main_desc">Take a break, or add a new task</string>
     <string name="empty_state_history_title">No completed tasks!</string>
     <string name="empty_state_history_desc">Keep calm and start adding some</string>
+    <string name="todo_deadline">01/01/2001</string>
 
 </resources>

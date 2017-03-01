@@ -17,7 +17,8 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
         View.OnClickListener {
 
     private Context context;
-    private TextView textView;
+    private TextView title;
+    public TextView deadline;
 
     private TouchListener touchListener;
 
@@ -26,15 +27,20 @@ public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelp
         this.touchListener = touchListener;
 
         context = itemView.getContext();
-        textView = (TextView) itemView.findViewById(R.id.todo_title);
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(),
+        title = (TextView) itemView.findViewById(R.id.todo_title);
+        title.setTypeface(Typeface.createFromAsset(context.getAssets(),
                 "fonts/Roboto_Slab/RobotoSlab-Regular.ttf"));
+        deadline = (TextView) itemView.findViewById(R.id.todo_deadline);
 
         itemView.setOnClickListener(this);
     }
 
     public void setTitle(String title) {
-        this.textView.setText(title);
+        this.title.setText(title);
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline.setText(deadline);
     }
 
     @Override
