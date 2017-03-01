@@ -7,20 +7,16 @@ public class Todo {
 
     private String key;
     private String title;
+    private String deadline;
     private int position;
 
     public Todo() {
         // Default constructor required for calls to DataSnapshot.getValue(Todo.class)
     }
 
-    public Todo(String title) {
+    public Todo(String title, String deadline) {
         this.title = title;
-    }
-
-    public Todo(String key, String title, int position) {
-        this.key = key;
-        this.title = title;
-        this.position = position;
+        this.deadline = deadline;
     }
 
     @Exclude
@@ -38,6 +34,14 @@ public class Todo {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
     public int getPosition() {

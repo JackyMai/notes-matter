@@ -33,11 +33,13 @@ public class AlertHelper {
 
     private AlertDialog dialog;
     private EditText editText;
-    private Todo todo;
+    private String deadline;
 
     private TextView word_count;
     private ImageButton date_button;
     private ImageButton add_button;
+
+    private Calendar calendar;
 
     private void createInputDialog(final Context context) {
         @SuppressLint("InflateParams")
@@ -50,29 +52,39 @@ public class AlertHelper {
         word_count = (TextView) dialog_view.findViewById(R.id.word_count);
         final int defaultColor = word_count.getCurrentTextColor();
 
-        date_button = (ImageButton) dialog_view.findViewById(R.id.dialog_date_button);
-
-        final Calendar calendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        calendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                deadline = dayOfMonth + "/" + month + "/" + year;  // Set deadline if date is picked
+                date_button.setColorFilter(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null));
             }
         };
 
+        date_button = (ImageButton) dialog_view.findViewById(R.id.dialog_date_button);
+        date_button.setColorFilter(Color.GRAY);
         date_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(context,
-                        date,
+                final DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                        dateListener,
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                        calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Remove", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deadline = null;
+                        date_button.setColorFilter(Color.GRAY);
+                        datePickerDialog.dismiss();
+                    }
+                });
+                datePickerDialog.show();
             }
         });
-
 
         add_button = (ImageButton) dialog_view.findViewById(R.id.dialog_add_button);
         editText = (EditText) dialog_view.findViewById(R.id.dialog_todo_text);
@@ -118,15 +130,8 @@ public class AlertHelper {
 
         if(dialog.getWindow() != null) {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-
-            }
-        });
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     public void createAddDialog(final Context context, final TodoAdapter adapter) {
@@ -137,7 +142,7 @@ public class AlertHelper {
             public void onClick(View v) {
                 String input = editText.getText().toString().trim();
                 if(!input.isEmpty()) {
-                    adapter.onItemAdd(new Todo(input));
+                    adapter.onItemAdd(new Todo(input, deadline));
                 }
                 dialog.dismiss();
             }
@@ -149,30 +154,42 @@ public class AlertHelper {
     public void createEditDialog(final Context context, final TodoAdapter adapter, final int position) {
         createInputDialog(context);
 
+        final Todo todo = adapter.getTodoItem(position);
+
+        // Set deadline for calendar if the item has one
+        if(todo.getDeadline() != null) {
+            // Deadline format in String = "dd/MM/yyyy"
+            String[] deadline = todo.getDeadline().split("/");
+            calendar.set(Calendar.YEAR, Integer.parseInt(deadline[2]));
+            calendar.set(Calendar.MONTH, Integer.parseInt(deadline[1]));
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(deadline[0]));
+            date_button.setColorFilter(ResourcesCompat.getColor(context.getResources(), R.color.colorAccent, null));
+        }
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String input = editText.getText().toString().trim();
                 if(!input.isEmpty()) {
                     todo.setTitle(input);
+                    todo.setDeadline(deadline);
                     adapter.onItemUpdate(todo);
                 }
                 dialog.dismiss();
             }
         });
 
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                adapter.notifyItemChanged(position);
-            }
-        });
-
-        todo = adapter.getTodoItem(position);
         word_count.setText(String.valueOf(WORD_LIMIT - todo.getTitle().length()));
         editText.setText(todo.getTitle());
         editText.setSelection(editText.getText().length());
 
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                // Used to trigger the swipe recover animation
+                adapter.notifyItemChanged(position);
+            }
+        });
         dialog.show();
     }
 
