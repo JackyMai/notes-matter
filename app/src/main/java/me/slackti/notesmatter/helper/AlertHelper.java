@@ -111,8 +111,8 @@ public class AlertHelper {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().trim().isEmpty()) {   // Input is not whitespace
-                    if(s.charAt(s.length()-1) == '\n') {    // Last character is new line
+                if(s.length() > 0 && s.charAt(s.length()-1) == '\n') {    // Last character is new line
+                    if(!s.toString().trim().isEmpty()) {   // Input is not whitespace
                         if(add_button.isEnabled()) {
                             add_button.callOnClick();
                         } else {
@@ -121,9 +121,9 @@ public class AlertHelper {
                             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                             s.delete(s.length()-1, s.length());
                         }
+                    } else {
+                        dialog.dismiss();   // Input is whitespace, close dialog
                     }
-                } else {
-                    dialog.dismiss();   // Input is whitespace, close dialog
                 }
             }
         });
