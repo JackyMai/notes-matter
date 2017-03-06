@@ -18,10 +18,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.database.FirebaseHelper;
+import me.slackti.notesmatter.helper.database.FirebaseHelper;
 import me.slackti.notesmatter.model.Todo;
 import me.slackti.notesmatter.model.TodoHolder;
-import me.slackti.notesmatter.touch.TouchListener;
+import me.slackti.notesmatter.listener.button.TouchListener;
 
 public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
 

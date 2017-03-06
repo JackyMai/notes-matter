@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.TouchListener;
+import me.slackti.notesmatter.listener.button.TouchListener;
 
 public class HistoryAdapter extends BaseAdapter {
 

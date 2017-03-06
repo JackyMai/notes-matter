@@ -1,4 +1,4 @@
-package me.slackti.notesmatter.touch;
+package me.slackti.notesmatter.adapter;
 
 
 import me.slackti.notesmatter.model.Todo;

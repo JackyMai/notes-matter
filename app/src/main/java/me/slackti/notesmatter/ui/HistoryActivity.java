@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.HistoryAdapter;
 import me.slackti.notesmatter.callback.ActionModeCallback;
-import me.slackti.notesmatter.listener.UndoneButtonListener;
+import me.slackti.notesmatter.listener.button.UndoneButtonListener;
 
 import static android.view.View.GONE;
 

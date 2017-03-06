@@ -1,10 +1,9 @@
-package me.slackti.notesmatter.listener;
+package me.slackti.notesmatter.listener.button;
 
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.TouchListener;
 
 
 public class DoneButtonListener extends BaseListener {

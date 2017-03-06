@@ -1,20 +1,17 @@
-package me.slackti.notesmatter.listener;
-
+package me.slackti.notesmatter.listener.button;
 
 import android.content.Context;
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.helper.AlertHelper;
-import me.slackti.notesmatter.touch.TouchListener;
 
 
-public class EditButtonListener extends BaseListener {
+public class FabListener implements View.OnClickListener {
     private Context context;
     private TodoAdapter adapter;
 
-    public EditButtonListener(Context context, TodoAdapter adapter, TouchListener clickListener) {
-        super(clickListener);
+    public FabListener(Context context, TodoAdapter adapter) {
         this.context = context;
         this.adapter = adapter;
     }
@@ -22,9 +19,6 @@ public class EditButtonListener extends BaseListener {
     @Override
     public void onClick(View v) {
         AlertHelper alertHelper = new AlertHelper();
-        alertHelper.createEditDialog(context, adapter, adapter.getSelectedPos());
-
-        super.onClick(v);
+        alertHelper.createAddDialog(context, adapter);
     }
-
 }

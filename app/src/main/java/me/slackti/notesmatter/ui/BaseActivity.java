@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.BaseAdapter;
 import me.slackti.notesmatter.callback.ActionModeCallback;
-import me.slackti.notesmatter.touch.TouchListener;
+import me.slackti.notesmatter.listener.button.TouchListener;
 
 public class BaseActivity extends AppCompatActivity implements TouchListener {
     RelativeLayout emptyState;

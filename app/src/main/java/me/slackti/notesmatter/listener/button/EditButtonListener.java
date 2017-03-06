@@ -1,30 +1,29 @@
-package me.slackti.notesmatter.listener;
+package me.slackti.notesmatter.listener.button;
+
 
 import android.content.Context;
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.helper.AlertHelper;
-import me.slackti.notesmatter.touch.TouchListener;
 
 
-public class DeleteButtonListener extends BaseListener {
+public class EditButtonListener extends BaseListener {
     private Context context;
     private TodoAdapter adapter;
 
-    public DeleteButtonListener(Context context, TodoAdapter adapter, TouchListener touchListener) {
-        super(touchListener);
+    public EditButtonListener(Context context, TodoAdapter adapter, TouchListener clickListener) {
+        super(clickListener);
         this.context = context;
         this.adapter = adapter;
     }
 
     @Override
     public void onClick(View v) {
-        int position = adapter.getSelectedItem().getPosition();
-
         AlertHelper alertHelper = new AlertHelper();
-        alertHelper.createDeleteDialog(context, adapter, position);
+        alertHelper.createEditDialog(context, adapter, adapter.getSelectedPos());
 
         super.onClick(v);
     }
+
 }

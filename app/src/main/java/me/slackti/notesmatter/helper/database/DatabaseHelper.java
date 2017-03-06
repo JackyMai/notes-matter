@@ -1,4 +1,4 @@
-package me.slackti.notesmatter.database;
+package me.slackti.notesmatter.helper.database;
 
 import android.content.ContentValues;
 import android.content.Context;

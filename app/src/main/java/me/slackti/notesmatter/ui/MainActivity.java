@@ -22,11 +22,11 @@ import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.callback.ActionModeCallback;
 import me.slackti.notesmatter.callback.SimpleItemTouchHelperCallback;
-import me.slackti.notesmatter.listener.DeleteButtonListener;
-import me.slackti.notesmatter.listener.DoneButtonListener;
-import me.slackti.notesmatter.listener.EditButtonListener;
-import me.slackti.notesmatter.listener.FabListener;
-import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
+import me.slackti.notesmatter.listener.button.DeleteButtonListener;
+import me.slackti.notesmatter.listener.button.DoneButtonListener;
+import me.slackti.notesmatter.listener.button.EditButtonListener;
+import me.slackti.notesmatter.listener.button.FabListener;
+import me.slackti.notesmatter.adapter.ItemTouchHelperAdapter;
 
 import static android.view.View.GONE;
 

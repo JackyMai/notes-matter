@@ -9,8 +9,7 @@ import android.widget.LinearLayout;
 import java.util.Collections;
 
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
-import me.slackti.notesmatter.touch.TouchListener;
+import me.slackti.notesmatter.listener.button.TouchListener;
 
 
 public class TodoAdapter extends BaseAdapter implements ItemTouchHelperAdapter {

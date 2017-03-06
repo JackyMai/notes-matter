@@ -9,8 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.slackti.notesmatter.R;
-import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
-import me.slackti.notesmatter.touch.TouchListener;
+import me.slackti.notesmatter.listener.button.TouchListener;
 
 
 public class TodoHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder,

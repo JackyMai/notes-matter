@@ -1,4 +1,4 @@
-package me.slackti.notesmatter.database;
+package me.slackti.notesmatter.helper.database;
 
 
 import com.google.firebase.auth.FirebaseAuth;

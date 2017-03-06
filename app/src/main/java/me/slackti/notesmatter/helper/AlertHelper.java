@@ -25,7 +25,7 @@ import java.util.Calendar;
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.model.Todo;
-import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
+import me.slackti.notesmatter.adapter.ItemTouchHelperAdapter;
 
 public class AlertHelper {
 

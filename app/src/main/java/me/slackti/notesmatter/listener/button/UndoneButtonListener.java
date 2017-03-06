@@ -1,10 +1,9 @@
-package me.slackti.notesmatter.listener;
+package me.slackti.notesmatter.listener.button;
 
 
 import android.view.View;
 
 import me.slackti.notesmatter.adapter.HistoryAdapter;
-import me.slackti.notesmatter.touch.TouchListener;
 
 public class UndoneButtonListener extends BaseListener {
     private HistoryAdapter adapter;

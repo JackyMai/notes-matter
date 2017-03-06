@@ -1,9 +1,7 @@
-package me.slackti.notesmatter.listener;
+package me.slackti.notesmatter.listener.button;
 
 
 import android.view.View;
-
-import me.slackti.notesmatter.touch.TouchListener;
 
 public class BaseListener implements View.OnClickListener {
     private TouchListener touchListener;

@@ -13,8 +13,8 @@ import android.view.View;
 import me.slackti.notesmatter.R;
 import me.slackti.notesmatter.adapter.TodoAdapter;
 import me.slackti.notesmatter.helper.AlertHelper;
-import me.slackti.notesmatter.touch.ItemTouchHelperAdapter;
-import me.slackti.notesmatter.touch.ItemTouchHelperViewHolder;
+import me.slackti.notesmatter.adapter.ItemTouchHelperAdapter;
+import me.slackti.notesmatter.model.ItemTouchHelperViewHolder;
 
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {

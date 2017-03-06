@@ -1,4 +1,4 @@
-package me.slackti.notesmatter.touch;
+package me.slackti.notesmatter.model;
 
 public interface ItemTouchHelperViewHolder {
 
