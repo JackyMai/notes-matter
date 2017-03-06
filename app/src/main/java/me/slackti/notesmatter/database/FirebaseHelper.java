@@ -35,13 +35,6 @@ public class FirebaseHelper {
 
     private FirebaseHelper() {
         // Constructor made private to prevent it from being instantiated from outside
-        DatabaseReference rootRef = database.getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(user != null) {
-            activeRef = rootRef.child(ACTIVE).child(user.getUid());
-            inactiveRef = rootRef.child(INACTIVE).child(user.getUid());
-        }
     }
 
     public static FirebaseHelper getInstance() {
@@ -51,7 +44,18 @@ public class FirebaseHelper {
 
             firebaseHelper = new FirebaseHelper();
         }
+
         return firebaseHelper;
+    }
+
+    public void updateUserReferences() {
+        DatabaseReference rootRef = database.getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null) {
+            activeRef = rootRef.child(ACTIVE).child(user.getUid());
+            inactiveRef = rootRef.child(INACTIVE).child(user.getUid());
+        }
     }
 
     public void addActiveData(Todo todo) {

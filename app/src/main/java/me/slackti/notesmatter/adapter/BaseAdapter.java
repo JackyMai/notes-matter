@@ -48,6 +48,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<TodoHolder> {
         todoList = new ArrayList<>();
 
         firebaseHelper = FirebaseHelper.getInstance();
+        firebaseHelper.updateUserReferences();
 
         setAnimation();
     }
