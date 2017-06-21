@@ -1,5 +1,6 @@
 # Notes Matter
-A simple todo app created for the Android platform.
+A simple note-taking app created for the Android platform.  
+Created purely as a personal hobby with no prior experience in app development.
 
 ## Todo
 - Add the ability to create separate lists
